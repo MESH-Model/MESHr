@@ -11,11 +11,11 @@
 #' \option{DATE} for daily values, and will contain a standard \R date. For sub-daily timeseries
 #' the first column will be called \option{DATETIME} and will contain a standard \code{POSIXct} 
 #' date/time. If unsuccessful, returns the value \code{FALSE}.
-
+#' @author Kevin Shook
 #' @examples \dontrun{
 #' timezone <- 'etc/GMT+6'
 #' outfile <- "Basin_average_water_balance_ts.csv"
-#' output <- readOutputTimeseriesCSv(outfile, timezone)}
+#' output <- readOutputTimeseriesCSV(outfile, timezone)}
 readOutputTimeseriesCSV <- function(outputFile, timezone = ""){
   # check parameters
   if (outputFile == '') {
@@ -23,8 +23,13 @@ readOutputTimeseriesCSV <- function(outputFile, timezone = ""){
     return(FALSE)
   }
   
-  output <- read.csv(file = outputFile, header = TRUE, stringsAsFactors = FALSE)
+  output <- read.table(file = outputFile, header = TRUE, 
+                       stringsAsFactors = FALSE, sep = ",", strip.white = TRUE)
   
+  # remove empty columns caused by trailing commas
+  good_columns <- !is.na(output[1, ])
+  output <- output[, good_columns]
+ 
   # check for sub-daily output
   vars <- names(output)
   
@@ -37,7 +42,6 @@ readOutputTimeseriesCSV <- function(outputFile, timezone = ""){
     cat('Error: not a time series file\n')
     return(FALSE)
   }
-  
   
   if (vars[3] == "HOUR") {
     subdaily <- TRUE

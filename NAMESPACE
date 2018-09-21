@@ -2,4 +2,10 @@
 
 export(PBIAS)
 export(readOutputTimeseriesCSV)
+export(simpleHydrograph)
+import(ggplot2)
 import(grid)
+import(reshape2)
+import(stringr)
+importFrom(stats,na.omit)
+importFrom(utils,read.table)

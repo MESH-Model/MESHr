@@ -26,5 +26,8 @@ variables are combined into a single \R date or datetime.
 \dontrun{
 timezone <- 'etc/GMT+6'
 outfile <- "Basin_average_water_balance_ts.csv"
-output <- readOutputTimeseriesCSv(outfile, timezone)}
+output <- readOutputTimeseriesCSV(outfile, timezone)}
+}
+\author{
+Kevin Shook
 }

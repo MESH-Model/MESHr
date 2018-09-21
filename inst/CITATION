@@ -1,0 +1,13 @@
+citHeader("To cite MESHr in publications use:")
+
+citEntry(entry = "Manual",
+  title        = "{MESHr}: pre- and post- processing for the MESH model",
+  author       = personList(as.person("Al Pietroniro")),
+  year         = "2018",
+  url          = "https://github.com/CentreForHydrology/MESHr",
+
+  textVersion  =
+  paste("Al Peitroniro (2018).",
+        "CRHMr: pre- and post- processing for the MESH model.",
+        "URL https://github.com/CentreForHydrology/MESHr")
+)

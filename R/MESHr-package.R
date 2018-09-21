@@ -8,5 +8,7 @@
 
 #' @references 
 #' To cite \pkg{MESHr} in publications, use the command \code{citation("MESHr")} to get the current version of the citation.\cr
-#' @import grid
+#' @import grid ggplot2 reshape2 stringr
+#' @importFrom stats na.omit 
+#' @importFrom utils read.table
 NULL
