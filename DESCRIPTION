@@ -7,8 +7,10 @@ Author: Al Pietroniro, Environment Canada
 Maintainer: Kevin Shook <kevin.shook@usask.ca>
 Description: This package contains functions for pre- and post- processing data for the MESH model.
 Depends: R (>= 3.1)
-Imports: grid, ggplot2, stringr, reshape2
+Imports: grid, ggplot2, stringr, reshape2, knitr
 License: GPL-3
 LazyData: true
 URL: https://github.com/CentreForHydrology/MESHr
 RoxygenNote: 6.1.0
+NeedsCompilation: no
+VignetteBuilder: knitr

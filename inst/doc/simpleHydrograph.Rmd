@@ -1,0 +1,104 @@
+---
+title: "simpleHydrograph"
+author: "Kevin Shook"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+library(MESHr)
+library(ggplot2)
+MESH_streamflows <- MESH_streamflows
+```
+
+The simpleHydrograph function is intended to plot hydrographs from MESH output alone,
+i.e. without additional data being supplied from another source, such as WSC data.
+The function produces a **ggplot2** object, which can then be manipulated to customise
+the plot. 
+
+The function requires a data frame of MESH flows. The first column must be a
+**R** date (named DATE) or a **POSIXct** datetime (named DATETIME). The easiest
+way to produce this data frame is by reading in the data using the function
+**readOutputTimeseriesCSV**. Functions will be added to read the output directly
+from the netCDF output.
+
+Note that you can subset the data to restrict the range plotted.
+
+The simplest plot shows all of the data in a single un-facetted graph. The stations
+are denoted by colour, and the type of flow (i.e. measured or simulated), by 
+line type. By default, the stations are labelled by their MESH numbers.
+```{r, fig.width = 5, fig.height = 3}
+simpleHydrograph(MESH_streamflows)
+```
+
+You can change the station names by specifying them in a vector.
+```{r, fig.width = 5, fig.height = 3}
+station_names <- c("Station 1", "Station 2")
+simpleHydrograph(MESH_streamflows, stationNames = station_names)
+```
+
+
+The function encourages the use of facetting to produce more readable plots. When facetting by station,
+it's a good idea to turn off the coloring of plots by station, by setting `byStation = FALSE`. You can
+change the x-axis scale and/or labels. Note that this example forces the facets to be
+on separate rows, so that the x-axes are as long as possible.
+
+```{r}
+p <- simpleHydrograph(MESH_streamflows, stationNames = station_names, byStation = FALSE)
+p <- p + facet_wrap(~station, nrow = 2) + scale_x_date(date_labels = "%Y")
+p
+```
+
+Because the magnitudes of the flows are so different for the stations, you can use 
+separate y scales:
+```{r, fig.width = 5, fig.height = 3}
+p <- p + facet_wrap(~station, nrow = 2, scales = "free_y") 
+p
+```
+
+Alternatively, you can facet the plots by the year. Note that this option adds a
+variable to the plot called `YEAR`. The uppercase variable name is in keeping with the 
+other MESH variables.
+
+```{r, fig.width = 5, fig.height = 3}
+p <- simpleHydrograph(MESH_streamflows, stationNames = station_names, byYear = TRUE)
+p <- p + facet_wrap(~YEAR, scales = "free_y")
+p
+```
+
+You can also create gridded facets by year and station.
+```{r, fig.width = 5, fig.height = 6}
+p <- simpleHydrograph(MESH_streamflows, stationNames = station_names, byStation = FALSE, byYear = TRUE)
+p <- p + facet_grid(YEAR~station, scales = "free_y")
+p
+```
+
+The default colors are a bit bland - you can easily change them. In this example,
+the y-axis labels are rotated, so they show up better.
+```{r, fig.width = 5, fig.height = 6}
+plotcols <- c("red", "blue")
+p <- p + scale_colour_manual(values = plotcols) +
+  theme(strip.text.y = element_text(angle = 0))
+p
+```
+
+You can plot only the measured or the simulated values. This this case, it's a good idea to suppress the flow type legend.
+```{r, fig.width = 5, fig.height = 6}
+p <- simpleHydrograph(MESH_streamflows, stationNames = station_names, 
+                      byStation = FALSE, byYear = TRUE, meas = FALSE) +
+  facet_grid(YEAR~station, scales = "free_y") +
+  scale_colour_manual(values = plotcols) +
+  theme(strip.text.y = element_text(angle = 0)) +
+  theme(legend.position = "none")
+
+p
+```
+
