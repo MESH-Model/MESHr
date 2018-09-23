@@ -24,7 +24,7 @@ i.e. without additional data being supplied from another source, such as WSC dat
 The function produces a **ggplot2** object, which can then be manipulated to customise
 the plot. 
 
-The function requires a data frame of MESH flows. The first column must be a
+The function requires a data frame of MESH flows. The first column must be an
 **R** date (named DATE) or a **POSIXct** datetime (named DATETIME). The easiest
 way to produce this data frame is by reading in the data using the function
 **readOutputTimeseriesCSV**. Functions will be added to read the output directly
@@ -51,7 +51,7 @@ it's a good idea to turn off the coloring of plots by station, by setting `bySta
 change the x-axis scale and/or labels. Note that this example forces the facets to be
 on separate rows, so that the x-axes are as long as possible.
 
-```{r}
+```{r, fig.width = 5, fig.height = 3}
 p <- simpleHydrograph(MESH_streamflows, stationNames = station_names, byStation = FALSE)
 p <- p + facet_wrap(~station, nrow = 2) + scale_x_date(date_labels = "%Y")
 p

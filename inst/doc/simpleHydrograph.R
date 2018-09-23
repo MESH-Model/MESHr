@@ -14,7 +14,7 @@ simpleHydrograph(MESH_streamflows)
 station_names <- c("Station 1", "Station 2")
 simpleHydrograph(MESH_streamflows, stationNames = station_names)
 
-## ------------------------------------------------------------------------
+## ---- fig.width = 5, fig.height = 3--------------------------------------
 p <- simpleHydrograph(MESH_streamflows, stationNames = station_names, byStation = FALSE)
 p <- p + facet_wrap(~station, nrow = 2) + scale_x_date(date_labels = "%Y")
 p
