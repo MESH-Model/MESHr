@@ -5,10 +5,10 @@
 \title{Creates hydrograph from MESH output}
 \usage{
 simpleHydrograph(MESHvals, stationNames = "", byStation = TRUE,
-  byYear = FALSE, meas = TRUE, sim = TRUE)
+  byYear = FALSE, meas = TRUE, sim = TRUE, stats = "")
 }
 \arguments{
-\item{MESHvals}{Requried. A data frame of output from a MESH run, as produced by \code{readOutputTimeseriesCSV}.}
+\item{MESHvals}{Required. A data frame of output from a MESH run, as produced by \code{readOutputTimeseriesCSV}.}
 
 \item{stationNames}{Optional. A vector of strings holding station names. If specified, the station names will 
 be used in the plots. Otherwise the MESH station numbers will be used.}

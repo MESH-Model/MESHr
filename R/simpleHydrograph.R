@@ -5,7 +5,7 @@
 #' not work with outside sources, such as WSC files. Because this function returns a 
 #' \pkg{ggplot} object, you can change its format in any way you like.
 #' The plots produced may be faceted using the commands \code{facet_wrap} or \code{facet_grid}.
-#' @param MESHvals Requried. A data frame of output from a MESH run, as produced by \code{readOutputTimeseriesCSV}.
+#' @param MESHvals Required. A data frame of output from a MESH run, as produced by \code{readOutputTimeseriesCSV}.
 #' @param stationNames Optional. A vector of strings holding station names. If specified, the station names will 
 #' be used in the plots. Otherwise the MESH station numbers will be used.
 #' @param byStation Optional. If \code{TRUE} (the default) then the plots will be coloured according to the station names. You may want to set this to \code{FALSE} if you are facetting by station name.
@@ -45,7 +45,7 @@
 #' p5 <- p5 + scale_colour_manual(values = plotcols)
 #' p5
 simpleHydrograph <- function(MESHvals, stationNames = "", byStation = TRUE, 
-                             byYear = FALSE, meas = TRUE, sim = TRUE) {
+                             byYear = FALSE, meas = TRUE, sim = TRUE, stats="") {
   # assign ggplot variables
   DATE <- NULL
   value <- NULL
@@ -106,9 +106,12 @@ simpleHydrograph <- function(MESHvals, stationNames = "", byStation = TRUE,
     if (!sim) {
       melted <- melted[melted$type != "Simulated", ]
     }
-      
-    # do plot
+    
+  # do plot
     if (!byYear & byStation) {
+      # all data on a single plot, coloured by station
+      # not intended for facetting
+
       p <- ggplot2::ggplot(melted, ggplot2::aes(DATE, value, colour = station, 
                                                 linetype = type)) +
         ggplot2::geom_line() +
