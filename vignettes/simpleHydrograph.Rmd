@@ -49,10 +49,12 @@ simpleHydrograph(MESH_streamflows, stationNames = station_names)
 The function encourages the use of facetting to produce more readable plots. When facetting by station,
 it's a good idea to turn off the coloring of plots by station, by setting `byStation = FALSE`. You can
 change the x-axis scale and/or labels. Note that this example forces the facets to be
-on separate rows, so that the x-axes are as long as possible.
+on separate rows, so that the x-axes are as long as possible. Because this requires other functions
+in ggplot2, you should load it before proceeding.
 
 ```{r, fig.width = 5, fig.height = 3}
 p <- simpleHydrograph(MESH_streamflows, stationNames = station_names, byStation = FALSE)
+library(ggplot2)
 p <- p + facet_wrap(~station, nrow = 2) + scale_x_date(date_labels = "%Y")
 p
 ```
@@ -100,5 +102,55 @@ p <- simpleHydrograph(MESH_streamflows, stationNames = station_names,
   theme(legend.position = "none")
 
 p
+```
+
+You can use the function **hydroStats** to calculate the goodness of fit of your 
+modelled hydrograph. 
+```{r}
+stats <- hydroStats(MESH_streamflows, stationNames = station_names)
+stats
+```
+
+Once the stats have been calculated, they can be added to a hydrograph. You can add the station names
+using the **ggplot2** function **annotate**
+To select the stat you want, specify its variable name. You can combine values together,
+or add station names.
+```{r}
+NSE <- paste(stats$station, "NSE =", stats$NSE, sep = " ")
+NSE
+```
+
+To add both values as a single string (which is required to annotate a single graph), you can paste them together
+```{r}
+all_NSE <- paste(NSE, collapse = ", ")
+all_NSE
+```
+
+Then use annotate to add the string to the graph. Note that you have to specify the
+location of the string, relative to the axes. Because the x-axis uses dates,
+you have to specify the location as a date.
+```{r, fig.width = 5, fig.height = 3}
+p1 <- simpleHydrograph(MESH_streamflows, stationNames = station_names, byStation = TRUE) +
+  scale_x_date(date_labels = "%Y")
+
+dateLoc <- as.Date("2005-01-01", format = "%Y-%m-%d")
+
+p2 <- p1 + annotate("text", x = dateLoc, y = 1500, label = all_NSE, hjust = "left")
+p2
+```
+
+Since the text doesn't fit very well, you can wrap it before adding it to the graph.
+```{r, fig.width = 5, fig.height = 3}
+wrapped_NSE <- paste(NSE, collapse = "\n")
+p3 <- p1 + annotate("text", x = dateLoc, y = 1500, label = wrapped_NSE, hjust = "left")
+p3
+```
+
+You can also apply the vector of NSE values to plot facets.
+```{r, fig.width = 5, fig.height = 3}
+p4 <- simpleHydrograph(MESH_streamflows, stationNames = station_names, byStation = FALSE)
+p4 <- p4 + facet_wrap(~station, nrow = 2) + scale_x_date(date_labels = "%Y")
+p4 <- p4 + annotate("text", x = dateLoc, y = 1500, label = NSE, hjust = "left")
+p4
 ```
 

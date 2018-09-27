@@ -37,7 +37,9 @@
 #' }
 #' @export
 #'
-#' @examples
+#' @examples 
+#' stats <- hydroStats(MESH_streamflows)
+#' stats$NSE
 hydroStats <- function(MESHvals, stationNames = "") {
   vars <- names(MESHvals)
   if (vars[1] != "DATE" & vars[1] != "DATETIME") {

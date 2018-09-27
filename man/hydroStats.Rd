@@ -46,3 +46,7 @@ This function is a wrapper for the function \code{gof} in the package \pkg{hydro
 It computes several Goodness of Fit statistics for each station. The output of this function may be
 used on its own, or to annotate a hydrograph.
 }
+\examples{
+stats <- hydroStats(MESH_streamflows)
+stats$NSE
+}
