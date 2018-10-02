@@ -161,7 +161,7 @@ to the plot, which can then be used for facetting. The value of
 the variable will be **Calibration** during the calibration period
 and **Validation** during the rest.
 
-```{r}
+```{r, fig.width = 5, fig.height = 3}
 calEnd <- "2010-01-01"
 p5 <- simpleHydrograph(MESH_streamflows, stationNames = station_names, 
                        byStation = FALSE, calEnd = calEnd)
@@ -170,7 +170,7 @@ p5
 ```
 
 You can easily change the scales (x, y, and colour) to make them more attractive.
-```{r}
+```{r, fig.width = 5, fig.height = 3}
 plotcols <- c("red", "blue")
 p6 <- p5 + facet_grid(station~period, scales = "free") + 
   scale_x_date(date_labels = "%Y") +
@@ -186,7 +186,7 @@ stats2
 ```
 
 You can add the stats by period to the plot.
-```{r}
+```{r, fig.width = 5, fig.height = 3}
 facetted_NSE <- paste("NSE = ", stats2$NSE[order(stats2$station)])
 p7 <- p5 + facet_grid(station~period) + 
   scale_x_date(date_labels = "%Y") +
