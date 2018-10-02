@@ -12,6 +12,7 @@
 #' the first column will be called \option{DATETIME} and will contain a standard \code{POSIXct} 
 #' date/time. If unsuccessful, returns the value \code{FALSE}.
 #' @author Kevin Shook
+#' @seealso \code{\link{simpleHydrograph}}
 #' @examples \dontrun{
 #' timezone <- 'etc/GMT+6'
 #' outfile <- "Basin_average_water_balance_ts.csv"

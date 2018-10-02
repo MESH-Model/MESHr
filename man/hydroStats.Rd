@@ -4,13 +4,17 @@
 \alias{hydroStats}
 \title{Calculates Goodness of Fit statistics for MESH output}
 \usage{
-hydroStats(MESHvals, stationNames = "")
+hydroStats(MESHvals, stationNames = "", calStart = "", calEnd = "")
 }
 \arguments{
 \item{MESHvals}{Required. A data frame of output from a MESH run, as produced by \code{readOutputTimeseriesCSV}.}
 
 \item{stationNames}{Optional. A vector of strings holding station names. If specified, the station names will 
 be used in the returned data frame, otherwise the MESH station numbers will be used.}
+
+\item{calStart}{Optional. The start date of the calibration period. Must be a string in the format \option{yyyy-mm-dd}. If specified, values on and after this date will be designated as the \code{Calibration} period. The remaining values will be designated as the \code{Validation} period.}
+
+\item{calEnd}{Optional. The start date of the calibration period. Must be a string in the format \option{yyyy-mm-dd}. If specified, values on and after this date will be designated as the \code{Calibration} period. The remaining values will be designated as the \code{Validation} period.}
 }
 \value{
 Returns a data frame with the following variables:
@@ -40,6 +44,7 @@ Returns a data frame with the following variables:
   \item{KGE}{Kling-Gupta efficiency between \code{sim} and \code{obs} \cr ( 0 <= KGE <= 1 )}
   \item{VE}{Volumetric efficiency between \code{sim} and \code{obs} \cr ( -Inf <= VE <= 1)}
 }
+If the calibration period is specified, then statistics will be computed separately for the Calibration and Validation periods. The period names and dates will be specified in additional columns.
 }
 \description{
 This function is a wrapper for the function \code{gof} in the package \pkg{hydroGOF}. 
@@ -49,4 +54,12 @@ used on its own, or to annotate a hydrograph.
 \examples{
 stats <- hydroStats(MESH_streamflows)
 stats$NSE
+periodStats <- hydroStats(MESH_streamflows, calEnd = "2010-01-01")
+periodStats[,1:7]
+}
+\seealso{
+\code{\link{simpleHydrograph}}
+}
+\author{
+Kevin Shook
 }

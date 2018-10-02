@@ -82,3 +82,29 @@ p4 <- p4 + facet_wrap(~station, nrow = 2) + scale_x_date(date_labels = "%Y")
 p4 <- p4 + annotate("text", x = dateLoc, y = 1500, label = NSE, hjust = "left")
 p4
 
+## ------------------------------------------------------------------------
+calEnd <- "2010-01-01"
+p5 <- simpleHydrograph(MESH_streamflows, stationNames = station_names, 
+                       byStation = FALSE, calEnd = calEnd)
+p5 <- p5 + facet_grid(station~period) + scale_x_date(date_labels = "%Y")
+p5
+
+## ------------------------------------------------------------------------
+plotcols <- c("red", "blue")
+p6 <- p5 + facet_grid(station~period, scales = "free") + 
+  scale_x_date(date_labels = "%Y") +
+  scale_colour_manual(values = plotcols)
+p6
+
+## ------------------------------------------------------------------------
+stats2 <- hydroStats(MESH_streamflows, stationNames = station_names, calEnd = calEnd)
+stats2
+
+## ------------------------------------------------------------------------
+facetted_NSE <- paste("NSE = ", stats2$NSE[order(stats2$station)])
+p7 <- p5 + facet_grid(station~period) + 
+  scale_x_date(date_labels = "%Y") +
+  scale_colour_manual(values = plotcols) + 
+  annotate("text", x = dateLoc, y = 1500, label = facetted_NSE, hjust = "left")
+p7
+

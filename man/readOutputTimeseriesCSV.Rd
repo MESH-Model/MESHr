@@ -28,6 +28,9 @@ timezone <- 'etc/GMT+6'
 outfile <- "Basin_average_water_balance_ts.csv"
 output <- readOutputTimeseriesCSV(outfile, timezone)}
 }
+\seealso{
+\code{\link{simpleHydrograph}}
+}
 \author{
 Kevin Shook
 }

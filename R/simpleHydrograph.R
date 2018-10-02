@@ -9,14 +9,17 @@
 #' @param stationNames Optional. A vector of strings holding station names. If specified, the station names will 
 #' be used in the plots. Otherwise the MESH station numbers will be used.
 #' @param byStation Optional. If \code{TRUE} (the default) then the plots will be coloured according to the station names. You may want to set this to \code{FALSE} if you are facetting by station name.
-#' @param byYear Optional. If \code{TRUE} then the plots will be able to be facetted by year. Note that this means that 
-#' the dates are all plotted using the year 2000, so you will see strange results if you set this to \code{TRUE} and 
-#' don't facet by year. Default is \code{FALSE}
+#' @param byYear Optional. If \code{TRUE} then the plots will be able to be facetted by year. Note that 
+#' this means that the dates are all plotted using the year 2000, so you will see strange results
+#'  if you set this to \code{TRUE} and don't facet by year. Default is \code{FALSE}
 #' @param meas Optional. Should the measured values be plotted? Default is \code{TRUE}. If \code{FALSE}, they will be omitted.
 #' @param sim Optional. Should the simulated values be plotted? Default is \code{TRUE}. If \code{FALSE}, they will be omitted.
-#'
+#' @param calStart Optional. The start date of the calibration period. Must be a string in the format \option{yyyy-mm-dd}. If specified, values on and after this date will be designated as the \code{Calibration} period. The remaining values will be designated as the \code{Validation} period.
+#' @param calEnd Optional. The start date of the calibration period. Must be a string in the format \option{yyyy-mm-dd}. If specified, values on and after this date will be designated as the \code{Calibration} period. The remaining values will be designated as the \code{Validation} period.
 #' @return If successful, returns a \pkg{ggplot2} object. If unsuccessful, returns \code{FALSE}. The object can be facetted by the name of the station (the variable is called \code{station}). If the option \code{byYear = TRUE}, then the object can be facetted by the variable \code{YEAR}.
 #' @author Kevin Shook
+#' @note Specifying the calibration start and/or end dates will allow the resulting plot to be facetted by the variable \code{period}.
+#' @seealso  \code{\link{readOutputTimeseriesCSV}} \code{\link{hydroStats}}
 #' @export
 #'
 #' @examples 
@@ -45,7 +48,8 @@
 #' p5 <- p5 + scale_colour_manual(values = plotcols)
 #' p5
 simpleHydrograph <- function(MESHvals, stationNames = "", byStation = TRUE, 
-                             byYear = FALSE, meas = TRUE, sim = TRUE, stats="") {
+                             byYear = FALSE, meas = TRUE, sim = TRUE, calStart = "",
+                             calEnd = "") {
   # assign ggplot variables
   DATE <- NULL
   value <- NULL
@@ -69,6 +73,18 @@ simpleHydrograph <- function(MESHvals, stationNames = "", byStation = TRUE,
   numCols <- ncol(MESHvals) - 1
   numStations <- floor(numCols / 2)
   
+  
+  if (calEnd != "") {
+    calEndDate <- as.Date(calEnd)
+  } else {
+    calEndDate <- as.Date(max(MESHvals[,1]))
+  }
+  
+  if (calStart != "") {
+    calStartDate <- as.Date(calStart)
+  } else {
+    calStartDate <- as.Date(min(MESHvals[,1]))
+  }
 
   # melt datasets
   if (vars[1] == "DATE") {
@@ -92,6 +108,13 @@ simpleHydrograph <- function(MESHvals, stationNames = "", byStation = TRUE,
       melted$station <- stationNames[as.numeric(melted$station)]
     }
     
+    # add period
+    if ((calStart != "") | (calEnd != "")) {
+      melted$period <- "Validation"
+      melted$period[(melted$DATE >= calStartDate) & 
+                      (melted$DATE <= calEndDate)] <- "Calibration"
+    }
+    
     # if by year, add year and fakedate
     if (byYear) {
       melted$YEAR <- as.numeric(format(melted$DATE, format = "%Y"))
@@ -106,6 +129,8 @@ simpleHydrograph <- function(MESHvals, stationNames = "", byStation = TRUE,
     if (!sim) {
       melted <- melted[melted$type != "Simulated", ]
     }
+    
+
     
   # do plot
     if (!byYear & byStation) {
@@ -170,6 +195,14 @@ simpleHydrograph <- function(MESHvals, stationNames = "", byStation = TRUE,
         melted$station <- stationNames[melted$station]
       }
       
+      # add period
+      if ((calStart != "") | (calEnd != "")) {
+        melted$period <- "Validation"
+        melted$period[(as.Date(melted$DATETIME) >= calStartDate) & 
+                        (as.Date(melted$DATE) <= calEndDate)] <- "Calibration"
+      }
+      
+      
       # if by year, add year and fakedate
       if (byYear) {
         melted$YEAR <- as.numeric(format(melted$DATETIME, format = "%Y"))
@@ -186,6 +219,8 @@ simpleHydrograph <- function(MESHvals, stationNames = "", byStation = TRUE,
       if (!sim) {
         melted <- melted[melted$type != "Simulated", ]
       }
+      
+
       
       # do plot
       if (!byYear & byStation) {
