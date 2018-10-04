@@ -4,12 +4,15 @@
 \alias{readOutputTimeseriesCSV}
 \title{Reads MESH output .csv file containing timeseries}
 \usage{
-readOutputTimeseriesCSV(outputFile, timezone = "")
+readOutputTimeseriesCSV(outputFile, timezone = "",
+  missingValueThreshold = -0.1)
 }
 \arguments{
 \item{outputFile}{Required. Name of MESH output file. Must be a .csv file.}
 
 \item{timezone}{Not required for daily time series. Required for sub-daily time series. The name of the timezone of the data as a character string. This should be the timezone of your data, but omitting daylight savings time. Note that the timezone code is specific to your OS. To avoid problems, you should use a timezone without daylight savings time. You can use \option{etc/GMT+6} or \option{etc/GMT+7} for Central Standard and Mountain Standard time, respectively. DO NOT use \option{America/Regina} as the time zone, as it includes historical changes between standard and daylight savings time.}
+
+\item{missingValueThreshold}{Optional. Any value smaller than this value will be set to \code{NA_real_} when the file is imported. The default value is -0.1 to prevent zero values from being affected.}
 }
 \value{
 If successful, returns a data frame. The first columns will be called 

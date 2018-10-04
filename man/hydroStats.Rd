@@ -4,7 +4,10 @@
 \alias{hydroStats}
 \title{Calculates Goodness of Fit statistics for MESH output}
 \usage{
-hydroStats(MESHvals, stationNames = "", calStart = "", calEnd = "")
+hydroStats(MESHvals, stationNames = "", calStart = "", calEnd = "",
+  removeMissing = TRUE, doSpearman = FALSE, doPBFDC = FALSE,
+  digits = 2, j = 1, norm = "sd", s = c(1, 1, 1),
+  method = c("2009", "2012"), lQ.thr = 0.7, hQ.thr = 0.2)
 }
 \arguments{
 \item{MESHvals}{Required. A data frame of output from a MESH run, as produced by \code{readOutputTimeseriesCSV}.}
@@ -15,6 +18,26 @@ be used in the returned data frame, otherwise the MESH station numbers will be u
 \item{calStart}{Optional. The start date of the calibration period. Must be a string in the format \option{yyyy-mm-dd}. If specified, values on and after this date will be designated as the \code{Calibration} period. The remaining values will be designated as the \code{Validation} period.}
 
 \item{calEnd}{Optional. The start date of the calibration period. Must be a string in the format \option{yyyy-mm-dd}. If specified, values on and after this date will be designated as the \code{Calibration} period. The remaining values will be designated as the \code{Validation} period.}
+
+\item{removeMissing}{Required. Should rows with missing values be removed before statistics are calculted? Default is \code{TRUE}}
+
+\item{doSpearman}{Optional. Should Spearman correlation be computed? Default is \code{FALSE}.}
+
+\item{doPBFDC}{Optional. Should percent bias of slope of the midsegment of the FDC be computed? Default is \code{FALSE}.}
+
+\item{digits}{Optional. The number of decimal places for rounding goodness of fit statistics. If \code{0} the default, then it is not set. Default value is \code{2}. Note that percentages like NRMSE and PBIAS will only use a maximum of one decimal place.}
+
+\item{j}{Optional. Argument passed to the \code{mNSE} function in \pkg{hydroGOF}.}
+
+\item{norm}{Optional. Argument passed to the \code{nrmse} function in \pkg{hydroGOF}.}
+
+\item{s}{Optional. Argument passed to the \code{KGE} function in \pkg{hydroGOF}.}
+
+\item{method}{Optional. Argument passed to the \code{KGE} function in \pkg{hydroGOF}.}
+
+\item{lQ.thr}{Optional. Argument passed to the \code{pbiassfdc} function in \pkg{hydroGOF}.}
+
+\item{hQ.thr}{Optional. Argument passed to the \code{pbiassfdc} function in \pkg{hydroGOF}.}
 }
 \value{
 Returns a data frame with the following variables:
@@ -26,7 +49,7 @@ Returns a data frame with the following variables:
   \item{rmse}{Root Mean Square Error}
   \item{nrmse}{Normalized Root Mean Square Error  ( -100\% <= nrms <= 100\% )}
   \item{PBIAS}{Percent Bias }
-  \item{pbiasfdc}{PBIAS in the slope of the midsegment of the Flow Duration Curve}
+  \item{pbiasfdc}{PBIAS in the slope of the midsegment of the Flow Duration Curve, if selected}
   \item{RSR}{Ratio of RMSE to the Standard Deviation of the Observations, RSR = rms / sd(obs). ( 0 <= RSR <= +Inf )}
   \item{rSD}{Ratio of Standard Deviations, rSD = sd(sim) / sd(obs)}
   \item{NSE}{Nash-Sutcliffe Efficiency ( -Inf <= NSE <= 1 )}
@@ -37,7 +60,7 @@ Returns a data frame with the following variables:
   \item{rd}{Relative Index of Agreement}
   \item{cp}{Persistence Index ( 0 <= PI <= 1 ) }
   \item{r}{Pearson Correlation coefficient ( -1 <= r <= 1 )}
-  \item{r.Spearman}{Spearman Correlation coefficient ( -1 <= r.Spearman <= 1 ) }
+  \item{r.Spearman}{Spearman Correlation coefficient ( -1 <= r.Spearman <= 1 ), if selected}
   \item{R2}{Coefficient of Determination ( 0 <= R2 <= 1 ). \cr
     Gives the proportion of the variance of one variable that is predictable from the other variable}
   \item{bR2}{R2 multiplied by the coefficient of the regression line between \code{sim} and \code{obs} \cr ( 0 <= bR2 #'   <= 1 )}
@@ -58,7 +81,7 @@ periodStats <- hydroStats(MESH_streamflows, calEnd = "2010-01-01")
 periodStats[,1:7]
 }
 \seealso{
-\code{\link{simpleHydrograph}}
+\code{\link{simpleHydrograph}} \code{\link{gof}}
 }
 \author{
 Kevin Shook
