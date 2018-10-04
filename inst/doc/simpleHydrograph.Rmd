@@ -19,15 +19,16 @@ library(ggplot2)
 MESH_streamflows <- MESH_streamflows
 ```
 
-The simpleHydrograph function is intended to plot hydrographs from MESH output alone,
+## simpleHydrograph
+The `simpleHydrograph` function is intended to plot hydrographs from MESH output alone,
 i.e. without additional data being supplied from another source, such as WSC data.
 The function produces a **ggplot2** object, which can then be manipulated to customise
 the plot. 
 
 The function requires a data frame of MESH flows. The first column must be an
-**R** date (named DATE) or a **POSIXct** datetime (named DATETIME). The easiest
+**R** date (named DATE) or a `POSIXct` datetime (named DATETIME). The easiest
 way to produce this data frame is by reading in the data using the function
-**readOutputTimeseriesCSV**. Functions will be added to read the output directly
+`readOutputTimeseriesCSV`. Functions will be added to read the output directly
 from the netCDF output.
 
 Note that you can subset the data to restrict the range plotted.
@@ -47,10 +48,14 @@ simpleHydrograph(MESH_streamflows, stationNames = station_names)
 
 
 The function encourages the use of facetting to produce more readable plots. When facetting by station,
-it's a good idea to turn off the coloring of plots by station, by setting `byStation = FALSE`. You can
+it's a good idea to turn off the coloring of plots by station, by setting the option `byStation = FALSE`. You can
 change the x-axis scale and/or labels. Note that this example forces the facets to be
 on separate rows, so that the x-axes are as long as possible. Because this requires other functions
-in ggplot2, you should load it before proceeding.
+in **ggplot2**, you should load it before proceeding.
+
+Because we will be modifying the plot, it needs to be saved to a variable, in this case `p`. The
+value of the variable is updated with any number of **ggplot2** commands. To plot
+the graph at any time, just type the name of the variable to show its value.
 
 ```{r, fig.width = 5, fig.height = 3}
 p <- simpleHydrograph(MESH_streamflows, stationNames = station_names, byStation = FALSE)
@@ -104,15 +109,18 @@ p <- simpleHydrograph(MESH_streamflows, stationNames = station_names,
 p
 ```
 
-You can use the function **hydroStats** to calculate the goodness of fit of your 
-modelled hydrograph. 
+## hydroStats
+You can use the function `hydroStats` to calculate the goodness of fit of your 
+modelled hydrograph. This function is a wrapper for the function `gof` in the package
+**hydroGOF**, making it easier to use with MESH data.
+
 ```{r}
 stats <- hydroStats(MESH_streamflows, stationNames = station_names)
 stats
 ```
 
 Once the stats have been calculated, they can be added to a hydrograph. You can add the station names
-using the **ggplot2** function **annotate**
+using the **ggplot2** function `annotate`.
 To select the stat you want, specify its variable name. You can combine values together,
 or add station names.
 ```{r}
@@ -156,10 +164,10 @@ p4
 
 You can specify that the modelled data consist of both caibration 
 and verification data, by specifying the beginning and/or the end
-dates of the calibration series. This adds the variable ***period**
+dates of the calibration series. This adds the variable `period`
 to the plot, which can then be used for facetting. The value of
-the variable will be **Calibration** during the calibration period
-and **Validation** during the rest.
+the variable will be `"Calibration"` during the calibration period
+and `"Validation"` during the rest.
 
 ```{r, fig.width = 5, fig.height = 3}
 calEnd <- "2010-01-01"
@@ -178,7 +186,7 @@ p6 <- p5 + facet_grid(station~period, scales = "free") +
 p6
 ```
 
-The **hydroStats** function also works with separate calibration and validation 
+The `hydroStats` function also works with separate calibration and validation 
 periods.
 ```{r}
 stats2 <- hydroStats(MESH_streamflows, stationNames = station_names, calEnd = calEnd)
@@ -194,4 +202,3 @@ p7 <- p5 + facet_grid(station~period) +
   annotate("text", x = dateLoc, y = 1500, label = facetted_NSE, hjust = "left")
 p7
 ```
-
