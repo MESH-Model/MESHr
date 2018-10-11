@@ -51,7 +51,6 @@
 #' @author Kevin Shook
 #' @seealso \code{\link{simpleHydrograph}} \code{\link{gof}}
 #' @export
-#' @export
 #'
 #' @examples 
 #' stats <- hydroStats(MESH_streamflows)
