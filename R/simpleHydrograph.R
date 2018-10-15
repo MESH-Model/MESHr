@@ -19,7 +19,7 @@
 #' @return If successful, returns a \pkg{ggplot2} object. If unsuccessful, returns \code{FALSE}. The object can be facetted by the name of the station (the variable is called \code{station}). If the option \code{byYear = TRUE}, then the object can be facetted by the variable \code{YEAR}.
 #' @author Kevin Shook
 #' @note Specifying the calibration start and/or end dates will allow the resulting plot to be facetted by the variable \code{period}.
-#' @seealso  \code{\link{readOutputTimeseriesCSV}} \code{\link{hydroStats}}
+#' @seealso \code{\link{readOutputTimeseriesCSV}} \code{\link{hydroStats}}
 #' @export
 #'
 #' @examples 

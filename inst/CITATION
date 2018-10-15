@@ -8,6 +8,6 @@ citEntry(entry = "Manual",
 
   textVersion  =
   paste("Al Peitroniro (2018).",
-        "CRHMr: pre- and post- processing for the MESH model.",
+        "MESHr: pre- and post- processing for the MESH model.",
         "URL https://github.com/CentreForHydrology/MESHr")
 )

@@ -2,62 +2,27 @@
 % Please edit documentation in R/basinStoragePlot.R
 \name{basinStoragePlot}
 \alias{basinStoragePlot}
-\title{Plots basin water balance storage components}
+\title{Plots total basin storage}
 \usage{
-basinStoragePlot(basinWaterBalance, varNames = "", layers = c(1, 2, 3,
-  4, 5, 6), alternativeNames = TRUE)
+basinStoragePlot(basinWaterBalance)
 }
 \arguments{
-\item{basinWaterBalance}{Required. Data frame to be plotted. As read in by \code{readOutputTimeseriesCSV}.}
-
-\item{varNames}{Optional. A vector of the names of the variables to be plotted. 
-If not specified, all of the variables listed above will be plotted.}
-
-\item{layers}{Optional. A vector of the layers to be plotted. By default 
-layers 1 through 6 are used.}
-
-\item{alternativeNames}{Optional. If \code{TRUE}, the names for variables 
-LQWS, FZWS, ALWS, SNCAN, and PNDW are changed to those used by the spreadsheet
-found at \url{https://wiki.usask.ca/download/attachments/426115389/Basin_average_water_balance.xls?version=1&modificationDate=1315409190000&api=v2}. Otherwise the variable names in the 
-original data frame are used.}
+\item{basinWaterBalance}{Required. Data frame to be plotted. As read in by 
+\code{readOutputTimeseriesCSV}.}
 }
 \value{
-Returns a \pkg{ggplot2} stacked area time plot of the variable values (mm).
+Returns a \pkg{ggplot2} line plot of the value of \code{STG} (mm).
 }
 \description{
-Creates a \pkg{ggplot2} stacked area plot of specified water 
-balance storage components. The variables plotted may include:
-\describe{
-  \item{variable}{definition}
-  \item{SNCAN}{Snow component of precipitation intercepted by the canopy}
-  \item{RCAN}{Rain component of precipitation intercepted by the canopy	mm or kg m-2 of water	AVG}
-  \item{SNO}{Snow water equivalent (SWE) of the snow mass}
-  \item{PNDW}{Depth of water ponded at the surface}
-  \item{LQWS}{Water equivalent of the volumetric liquid water content of the soil}
-  \item{FZWS}{Water equivalent of the volumetric frozen water content of the soil}
-  \item{ALWS}{Water equivalent of the volumetric liquid and frozen water contents of the soil, sum of LQWS and FZWS}
-  \item{STG}{Total storage, sum of SNCAN, RCAN, SNO, WSNO, PNDW, and ALWS}
-  \item{DSTG}{Difference in storage to the previous time-step or to the beginning of the run for the case of the first time-step}
-  }
+Plots total basin storage
 }
 \examples{
 \dontrun{
-p <- basinStoragePlot(waterBalance)
-# the plot can have a restricted date range
-startDate <- as.Date("2005-10-01", format = "\%Y-\%m-\%d")
-endDate <- as.Date("2006-09-30", format = "\%Y-\%m-\%d")
-library(ggplot2)
-p <- p + xlim(startDate, endDate)
-# you can also change the colours used, either by
-using a defined scale, or by manually specifying them
-# This example uses the colours in the package viridis
-# which scales from dark to light by reversing the direction
-library(viridis)
-p <- p +  scale_fill_viridis(discrete = TRUE, direction = -1)
-}
+waterBalance <- readOutputTimeseriesCSV("Basin_average_water_balance.csv")
+p <- basinStoragePlot(waterBalance)}
 }
 \seealso{
-\code{\link{readOutputTimeseriesCSV}}
+\code{\link{readOutputTimeseriesCSV}} \code{\link{basinStorageVariablesPlot}} \code{\link{basinSoilWaterIcePlot}}
 }
 \author{
 Kevin Shook

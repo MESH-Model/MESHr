@@ -1,18 +1,18 @@
-#' Plots total basin storage
+#' Plots basin snow water equivalent
 #'
-#' @param basinWaterBalance Required. Data frame to be plotted. As read in by 
-#' \code{readOutputTimeseriesCSV}.
-#' @return Returns a \pkg{ggplot2} line plot of the value of \code{STG} (mm).
+#' @param basinWaterBalance Required. Data frame to be plotted. As read in by \code{readOutputTimeseriesCSV}.
+#'
+#' @return Returns a \pkg{ggplot2} stacked line plot of the basin SWE (mm).
 #' @author Kevin Shook
-#' @seealso \code{\link{readOutputTimeseriesCSV}} \code{\link{basinStorageVariablesPlot}} \code{\link{basinSoilWaterIcePlot}}
+#' @seealso \code{\link{readOutputTimeseriesCSV}} \code{\link{basinStoragePlot}}
 #' @export
 #'
 #' @examples \dontrun{
 #' waterBalance <- readOutputTimeseriesCSV("Basin_average_water_balance.csv")
-#' p <- basinStoragePlot(waterBalance)}
+#' p <- basinSnowPlot(waterBalance)}
 
-basinStoragePlot <- function(basinWaterBalance) {
-  
+basinSnowPlot <- function(basinWaterBalance){
+  # declare ggplot variables
   p <- NULL
   DATE <- NULL
   value <- NULL
@@ -25,13 +25,14 @@ basinStoragePlot <- function(basinWaterBalance) {
     return(FALSE)
   }
   
-  varNames <- c("STG")
+  varNames <- c("SNO")
+  
   
   # get selected variables
   non_datetime <- basinWaterBalance[, -1]
   df_var_names <- names(non_datetime)
   
-  
+
   selected_vars <- df_var_names %in% varNames
   selected_df <- non_datetime[, selected_vars]
   
@@ -41,9 +42,6 @@ basinStoragePlot <- function(basinWaterBalance) {
     names(selected_df) <- names(non_datetime)[selected_vars]
   }
   
-  g_title <- "Basin Storage"
-  
-  
   # put all columns together
   allvars <- cbind(basinWaterBalance[, 1], selected_df)
   timeVarName <- names(basinWaterBalance)[1]
@@ -52,13 +50,13 @@ basinStoragePlot <- function(basinWaterBalance) {
   if (timeVarName == "DATE") {
     melted <- reshape2::melt(allvars, id.vars = "DATE")
     melted$variable <- as.character(melted$variable)
-    
+ 
     p <- ggplot2::ggplot(melted,
                          ggplot2::aes(DATE, value, colour = variable)) + 
       ggplot2::geom_line() + 
       ggplot2::xlab("") + 
       ggplot2::ylab("Water (mm)")  +
-      ggplot2::ggtitle(g_title)
+      ggplot2::ggtitle("Snow Water Equivalent")
     
   } else {
     melted <- reshape2::melt(allvars, id.vars = "datetime")
@@ -68,6 +66,8 @@ basinStoragePlot <- function(basinWaterBalance) {
       ggplot2::geom_line() + 
       ggplot2::xlab("") + 
       ggplot2::ylab("Water (mm)")  +
-      ggplot2::ggtitle(g_title)
+      ggplot2::ggtitle("Snow Water Equivalent")
   }
+  
+  return(p)
 }

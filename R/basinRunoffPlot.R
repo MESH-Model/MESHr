@@ -1,17 +1,21 @@
-#' Plots total basin storage
+#' Plots basin runoff components
 #'
 #' @param basinWaterBalance Required. Data frame to be plotted. As read in by 
 #' \code{readOutputTimeseriesCSV}.
-#' @return Returns a \pkg{ggplot2} line plot of the value of \code{STG} (mm).
+#' @param cumul Optional. If \code{FALSE}, then interval values are plotted. 
+#' If \code{TRUE} (the default) then cumulative values are plotted. Note that the cumulative 
+#' values are determined by summing the interval values \emph{not} by plotting the 
+#' MESH cumulative variables.
+#'
+#' @return Returns a \pkg{ggplot2} line plot of the variable values (mm).
 #' @author Kevin Shook
-#' @seealso \code{\link{readOutputTimeseriesCSV}} \code{\link{basinStorageVariablesPlot}} \code{\link{basinSoilWaterIcePlot}}
+#' @seealso \code{\link{readOutputTimeseriesCSV}} \code{\link{basinStoragePlot}} \code{\link{basinSoilWaterIcePlot}}
 #' @export
 #'
 #' @examples \dontrun{
 #' waterBalance <- readOutputTimeseriesCSV("Basin_average_water_balance.csv")
-#' p <- basinStoragePlot(waterBalance)}
-
-basinStoragePlot <- function(basinWaterBalance) {
+#' p <- basinRunoffPlot(waterBalance)}
+basinRunoffPlot <- function(basinWaterBalance, cumul = FALSE) {
   
   p <- NULL
   DATE <- NULL
@@ -25,7 +29,8 @@ basinStoragePlot <- function(basinWaterBalance) {
     return(FALSE)
   }
   
-  varNames <- c("STG")
+  varNames <- c("ROF", "ROFO", "ROFS", "ROFB")
+  
   
   # get selected variables
   non_datetime <- basinWaterBalance[, -1]
@@ -41,9 +46,14 @@ basinStoragePlot <- function(basinWaterBalance) {
     names(selected_df) <- names(non_datetime)[selected_vars]
   }
   
-  g_title <- "Basin Storage"
-  
-  
+  # make vars cumulative, if requested
+  if (cumul) {
+    selected_df <- cumsum(selected_df)
+    g_title <- "Runoff components (cumulative)"
+  } else {
+    g_title <- "Runoff components"
+  }
+    
   # put all columns together
   allvars <- cbind(basinWaterBalance[, 1], selected_df)
   timeVarName <- names(basinWaterBalance)[1]

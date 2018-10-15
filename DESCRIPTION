@@ -1,13 +1,13 @@
 Package: MESHr
 Type: Package
 Title: pre- and post processing for MESH
-Version: 0.0.6
-Date: 2018-10-11
+Version: 0.0.7
+Date: 2018-10-15
 Author: Al Pietroniro, Environment Canada
 Maintainer: Kevin Shook <kevin.shook@usask.ca>
 Description: This package contains functions for pre- and post- processing data for the MESH model.
 Depends: R (>= 3.1)
-Imports: grid, ggplot2, stringr, reshape2, knitr, hydroGOF
+Imports: grid, ggplot2, stringr, reshape2, knitr, hydroGOF, raster, rts, readr
 License: GPL-3
 LazyData: true
 URL: https://github.com/CentreForHydrology/MESHr

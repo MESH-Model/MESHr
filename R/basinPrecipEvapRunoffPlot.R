@@ -1,18 +1,15 @@
-#' Plots total basin storage
+#' Plots basin precipitation evaporation and runoff
 #'
-#' @param basinWaterBalance Required. Data frame to be plotted. As read in by 
-#' \code{readOutputTimeseriesCSV}.
-#' @return Returns a \pkg{ggplot2} line plot of the value of \code{STG} (mm).
+#' @param basinWaterBalance Required. Data frame to be plotted. As read in by \code{readOutputTimeseriesCSV}.
+#' @return Returns a \pkg{ggplot2} line plot of the variable values (mm).
 #' @author Kevin Shook
-#' @seealso \code{\link{readOutputTimeseriesCSV}} \code{\link{basinStorageVariablesPlot}} \code{\link{basinSoilWaterIcePlot}}
+#' @seealso \code{\link{readOutputTimeseriesCSV}} \code{\link{basinStoragePlot}} \code{\link{basinSoilWaterIcePlot}}
 #' @export
 #'
 #' @examples \dontrun{
 #' waterBalance <- readOutputTimeseriesCSV("Basin_average_water_balance.csv")
-#' p <- basinStoragePlot(waterBalance)}
-
-basinStoragePlot <- function(basinWaterBalance) {
-  
+#' p <- basinPrecipEvapRunoffPlot(waterBalance)}
+basinPrecipEvapRunoffPlot <- function(basinWaterBalance) {
   p <- NULL
   DATE <- NULL
   value <- NULL
@@ -25,7 +22,8 @@ basinStoragePlot <- function(basinWaterBalance) {
     return(FALSE)
   }
   
-  varNames <- c("STG")
+  varNames <- c("PRE", "EVAP", "ROF")
+  
   
   # get selected variables
   non_datetime <- basinWaterBalance[, -1]
@@ -41,8 +39,8 @@ basinStoragePlot <- function(basinWaterBalance) {
     names(selected_df) <- names(non_datetime)[selected_vars]
   }
   
-  g_title <- "Basin Storage"
-  
+
+  g_title <- "Precipitation, Evaporation and Runoff"
   
   # put all columns together
   allvars <- cbind(basinWaterBalance[, 1], selected_df)
