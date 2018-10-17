@@ -1,5 +1,10 @@
 #' Reads r2c file to raster brick
-#' @description Returns eiher a \pkg{raster} \code{brick} or an \pkg{rts} 
+#' @description This function reads a file
+#' containing a time series of 2D values, which is output from
+#' a MESH model. It is not intended to read in a file
+#' describing a drainage basin. For that purpose, you should be using the 
+#' function \code{r2c2basin}. This function returns eiher a \pkg{raster} \code{brick} or 
+#' an \pkg{rts} 
 #' \code{rts} object, which is a timeseries raster. Each Frame in the original 
 #' file becomes a separate layer. 
 #' 'The name of each layer in the \pkg{raster} \code{brick} is set to the 
@@ -7,7 +12,7 @@
 #' are standard \R variables, they must obey the rules for variable names,
 #' inclusing beginning with a character, and not containing spaces. These rule
 #' will change the layer names if you are not careful.
-#' @param r2cFile Required. Name of \code{r2c} file.
+#' @param r2cFile Required. Name of \code{r2c} file containing time series.
 #' @param NAvalue Optional. If specified, values smaller than \code{NAvalue}
 #' will be set to \code{NA_real_}
 #' @param as_rts Optional. If \code{TRUE}, the returned value will
@@ -26,7 +31,7 @@
 #' @return Returns eiher a \pkg{raster} \code{brick} or an \pkg{rts} 
 #' \code{rts} object.
 #' @author Kevin Shook
-#' @seealso \code{\link{rts}}
+#' @seealso \code{\link{rts}} \code{\link{r2c2basin}}
 #' @export
 #'
 #'
@@ -61,6 +66,13 @@ r2c2raster <- function(r2cFile, NAvalue = NULL, as_rts = FALSE, timezone = "",
   
   # find number of frames
   frame_start <- grep(":Frame", r2c, fixed = TRUE)
+  
+  # if no frames, terminate as this is not a time series file
+  if (length(frame_start) == 0) {
+    cat("Error: not a time series file\n")
+    return(FALSE)
+  }
+  
   frame_count <- length(frame_start)
   
   all_frame_vals <- array(data = 0, dim = c(yCount, xCount, frame_count))
@@ -75,7 +87,7 @@ r2c2raster <- function(r2cFile, NAvalue = NULL, as_rts = FALSE, timezone = "",
   ymx <- yOrigin + yDelta * yCount
   
   # convert projection to PROJ4 standard
-  if (projection == "LATLONG")
+  if (stringr::str_to_upper(projection) == "LATLONG")
     projection <- "longlat"
   
   projection_string <- paste("+proj=", projection,
@@ -98,9 +110,10 @@ r2c2raster <- function(r2cFile, NAvalue = NULL, as_rts = FALSE, timezone = "",
     
     frame_vals <- readr::read_fwf(frame_lines,
                                   readr::fwf_widths(widths))
-  
-    
-    all_frame_vals[,,i] <- data.matrix(frame_vals)
+    # convert values to a matrix and flip vertically
+    frame_matrix <- data.matrix(frame_vals)
+    frame_matrix_flipped <- apply(frame_matrix, 2, rev)
+    all_frame_vals[,,i] <- frame_matrix_flipped
   }
   
   # convert matrix to raster brick
