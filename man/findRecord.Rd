@@ -4,12 +4,15 @@
 \alias{findRecord}
 \title{Finds record in r2c data specified by string}
 \usage{
-findRecord(recordLines, string)
+findRecord(recordLines, string, ignore.case = TRUE)
 }
 \arguments{
 \item{recordLines}{Requred. Vector of lines from r2c file.}
 
 \item{string}{Required. Record name to searh for.}
+
+\item{ignore.case}{Optional. If \code{TRUE} (the default), 
+then case is ignored.}
 }
 \value{
 Returns trimmed record.

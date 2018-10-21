@@ -4,7 +4,7 @@
 \alias{r2c2basin}
 \title{Reads r2c file of a MESH basin}
 \usage{
-r2c2basin(r2cFile, values_only = TRUE, as_rasters = TRUE)
+r2c2basin(r2cFile = "", values_only = TRUE, as_rasters = TRUE)
 }
 \arguments{
 \item{r2cFile}{Required. Name of \code{r2c} file.}
