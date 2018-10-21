@@ -1,11 +1,16 @@
 #' Plots basin precipitation cumulative water balance.
 #'@description As with the \code{basinRunoffPlot}, the cumulative values of
-#'precipitation, evaporation and runoff are cumputed by the function, rather
-#'than by using the MESH variables.
+#' precipitation, evaporation and runoff (and optionally, delta storage) 
+#' are computed by the function, rather than by using the MESH variables. This
+#' allows the plot to be used on a sub-set of the basin output data.
 #' @param basinWaterBalance Required. Data frame to be plotted. As read in by 
 #' \code{readOutputTimeseriesCSV}. Note that because the value of \code{DTSG} 
 #' (delta storage) can be negative, you need to set a threshold value much smaller than
 #' zero when you read in the values. 
+#' @param accumulate_delta_storage Optional. If \code{TRUE} (the default),  
+#' the delta storage is accumulated from the beginning of the data set. If
+#' \code{FALSE}, the delta storage values in the file are \emph{not} accumulated
+#' as they are assumed to be cumualtive values.
 #' @return Returns a \pkg{ggplot2} line plot of the variable values (mm).
 #' @author Kevin Shook
 #' @seealso \code{\link{readOutputTimeseriesCSV}} \code{\link{basinStoragePlot}} \code{\link{basinSoilWaterIcePlot}}
@@ -16,7 +21,7 @@
 #' missingValueThreshold = -1e6)
 #' p <- basinWaterBalancePlot(waterBalance)}
 
-basinWaterBalancePlot <- function(basinWaterBalance) {
+basinWaterBalancePlot <- function(basinWaterBalance, accumulate_delta_storage = TRUE) {
   p <- NULL
   DATE <- NULL
   value <- NULL
@@ -40,7 +45,12 @@ basinWaterBalancePlot <- function(basinWaterBalance) {
   selected_df <- non_datetime[, selected_vars]
   
   # do cumulative values
-  selected_df[,c(1:3)] <- cumsum(selected_df[,c(1:3)])
+  if (!accumulate_delta_storage) {
+    selected_df[,c(1:3)] <- cumsum(selected_df[,c(1:3)])
+  } else {
+    selected_df[,c(1:4)] <- cumsum(selected_df[,c(1:4)])    
+  }
+
   
   # add net
   selected_df$net <- selected_df$PRE - selected_df$EVAP - 

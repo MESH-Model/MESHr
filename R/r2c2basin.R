@@ -28,7 +28,12 @@
 #' as_rasters = FALSE)
 #' }
 #' 
-r2c2basin <- function(r2cFile, values_only = TRUE, as_rasters = TRUE) {
+r2c2basin <- function(r2cFile = "", values_only = TRUE, as_rasters = TRUE) {
+  
+  if (r2cFile == "") {
+    cat("Error: missing MESH basin file\n")
+    return(FALSE)
+  }
   
   # read in file
   con <- file(r2cFile, "r", blocking = FALSE, encoding = "ISO_8859-2")
@@ -75,7 +80,7 @@ r2c2basin <- function(r2cFile, values_only = TRUE, as_rasters = TRUE) {
   attribute_type_vals <- stringr::str_split_fixed(attribute_type_lines, stringr::fixed(" "), n = 3)[,3]
   
   # data is following header
-  end_header <-   attribute_name_locs <- grep(":EndHeader", r2c, fixed = TRUE)
+  end_header <-  grep(":EndHeader", r2c, fixed = TRUE)
   data_lines <- r2c[-(1:end_header)]
   header_lines <- r2c[1:(end_header - 1)]
   

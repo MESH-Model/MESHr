@@ -2,17 +2,33 @@
 #'
 #' @param recordLines Requred. Vector of lines from r2c file.
 #' @param string Required. Record name to searh for.
+#' @param ignore.case Optional. If \code{TRUE} (the default), 
+#' then case is ignored.
 #' @author Kevin Shook
 #' @return Returns trimmed record.
 
-findRecord <- function(recordLines, string) {
-  linenum <- grep(string, recordLines, fixed = TRUE)
-  record <- recordLines[linenum]
+findRecord <- function(recordLines, string, ignore.case = TRUE) {
+  if (ignore.case) {
+    linenum <- grep(string, recordLines, ignore.case = TRUE) 
+    record <- recordLines[linenum]
+    
+    pieces <- stringr::str_split_fixed(record, 
+                                       stringr::regex(string, 
+                                       ignore_case = TRUE),
+                                       n = 2)
+    value <- pieces[[2]]
+  }
+  else {
+    linenum <- grep(string, recordLines, fixed = TRUE) 
+    # parse value from record
+    record <- recordLines[linenum]
+    pieces <- stringr::str_split_fixed(record, string, n = 2)
+    value <- pieces[[2]]
+  }  
+
+
   
-  # parse value from record
-  pieces <- stringr::str_split_fixed(record, string, n = 2)
-  value <- pieces[[2]]
-  
+
   # remove whitespace
   value <- stringr::str_trim(value)
   return(value)
@@ -38,4 +54,64 @@ win.eol <- function(){
     eol <- '\r\n'
   
   return(eol)
+}
+
+
+#' Parses a string containing numbers
+#'
+#' @param numString Required. A character string containing numbers separated by any number of spaces.
+#'
+#' @return Returns a numeric vector.
+#' @author Kevin Shook
+#' @export
+#'
+#' @examples
+#' parseNums(' 1  2 3   4     5 ')
+parseNums <- function(numString){
+  # remove padding
+  numString <- stringr::str_trim(numString)
+  
+  # swap tabs for chracters
+  numString <- stringr::str_replace_all(numString, stringr::fixed('\t'), ' ' )
+  double.spaces <- stringr::str_detect(numString, '  ')
+  # replace all double spaces with single spaces
+  
+  while (double.spaces){
+    numString <- stringr::str_replace_all(numString, '  ', ' ' )
+    double.spaces <- stringr::str_detect(numString, '  ')
+  }
+  
+  nums <- as.numeric(unlist(stringr::str_split(numString, ' ')))
+  return(nums)
+}
+
+
+#' Parses a string containing several sub-strings
+#' @param textString Required. A character string containing strings separated by any number of spaces.
+#'
+#' @return Returns a character vector.
+#' @author Kevin Shook
+#' @export
+#'
+#' @examples
+#' parseText(' red  green    blue      black')
+parseText <- function(textString){
+  #
+  # returns a vector
+  
+  # remove padding
+  textString <- stringr::str_trim(textString)
+  
+  # swap tabs for chracters
+  textString <- stringr::str_replace_all(textString, stringr::fixed('\t'), ' ' )
+  double.spaces <- stringr::str_detect(textString, '  ')
+  # replace all double spaces with single spaces
+  
+  while (double.spaces){
+    textString <- stringr::str_replace_all(textString, '  ', ' ' )
+    double.spaces <- stringr::str_detect(textString, '  ')
+  }
+  
+  texts <- unlist(stringr::str_split(textString, ' '))
+  return(texts)
 }

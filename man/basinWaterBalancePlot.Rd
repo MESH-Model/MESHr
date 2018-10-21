@@ -4,21 +4,27 @@
 \alias{basinWaterBalancePlot}
 \title{Plots basin precipitation cumulative water balance.}
 \usage{
-basinWaterBalancePlot(basinWaterBalance)
+basinWaterBalancePlot(basinWaterBalance, accumulate_delta_storage = TRUE)
 }
 \arguments{
 \item{basinWaterBalance}{Required. Data frame to be plotted. As read in by 
 \code{readOutputTimeseriesCSV}. Note that because the value of \code{DTSG} 
 (delta storage) can be negative, you need to set a threshold value much smaller than
 zero when you read in the values.}
+
+\item{accumulate_delta_storage}{Optional. If \code{TRUE} (the default),
+the delta storage is accumulated from the beginning of the data set. If
+\code{FALSE}, the delta storage values in the file are \emph{not} accumulated
+as they are assumed to be cumualtive values.}
 }
 \value{
 Returns a \pkg{ggplot2} line plot of the variable values (mm).
 }
 \description{
 As with the \code{basinRunoffPlot}, the cumulative values of
-precipitation, evaporation and runoff are cumputed by the function, rather
-than by using the MESH variables.
+precipitation, evaporation and runoff (and optionally, delta storage) 
+are computed by the function, rather than by using the MESH variables. This
+allows the plot to be used on a sub-set of the basin output data.
 }
 \examples{
 \dontrun{
