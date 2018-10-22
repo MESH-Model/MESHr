@@ -8,7 +8,7 @@ basinRunoffPlot(basinWaterBalance, cumul = FALSE)
 }
 \arguments{
 \item{basinWaterBalance}{Required. Data frame to be plotted. As read in by 
-\code{readOutputTimeseriesCSV}.}
+\code{read_MESH_OutputTimeseries_csv}.}
 
 \item{cumul}{Optional. If \code{FALSE}, then interval values are plotted. 
 If \code{TRUE} (the default) then cumulative values are plotted. Note that the cumulative 
@@ -23,11 +23,11 @@ Plots basin runoff components
 }
 \examples{
 \dontrun{
-waterBalance <- readOutputTimeseriesCSV("Basin_average_water_balance.csv")
+waterBalance <- read_MESH_OutputTimeseries_csv("Basin_average_water_balance.csv")
 p <- basinRunoffPlot(waterBalance)}
 }
 \seealso{
-\code{\link{readOutputTimeseriesCSV}} \code{\link{basinStoragePlot}} \code{\link{basinSoilWaterIcePlot}}
+\code{\link{read_MESH_OutputTimeseries_csv}} \code{\link{basinStoragePlot}} \code{\link{basinSoilWaterIcePlot}}
 }
 \author{
 Kevin Shook

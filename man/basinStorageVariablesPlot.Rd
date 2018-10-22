@@ -8,7 +8,7 @@ basinStorageVariablesPlot(basinWaterBalance, varNames = "",
   layers = c(1, 2, 3, 4, 5, 6))
 }
 \arguments{
-\item{basinWaterBalance}{Required. Data frame to be plotted. As read in by \code{readOutputTimeseriesCSV}.}
+\item{basinWaterBalance}{Required. Data frame to be plotted. As read in by \code{read_MESH_OutputTimeseries_csv}.}
 
 \item{varNames}{Optional. A vector of the names of the variables to be plotted. 
 If not specified, all of the variables listed above will be plotted.}
@@ -35,7 +35,7 @@ balance storage components. The variables plotted may include:
 }
 \examples{
 \dontrun{
-waterBalance <- readOutputTimeseriesCSV("Basin_average_water_balance.csv")
+waterBalance <- read_MESH_OutputTimeseries_csv("Basin_average_water_balance.csv")
 p <- basinStorageVariablesPlot(waterBalance)
 # the plot can have a restricted date range
 startDate <- as.Date("2005-10-01", format = "\%Y-\%m-\%d")
@@ -53,7 +53,7 @@ p
 }
 }
 \seealso{
-\code{\link{readOutputTimeseriesCSV}}
+\code{\link{read_MESH_OutputTimeseries_csv}}
 }
 \author{
 Kevin Shook

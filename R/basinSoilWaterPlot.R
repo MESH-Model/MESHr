@@ -1,15 +1,15 @@
 #' Plots basin soil liquid water
 #'
-#' @param basinWaterBalance Required. Data frame to be plotted. As read in by \code{readOutputTimeseriesCSV}.
+#' @param basinWaterBalance Required. Data frame to be plotted. As read in by \code{read_MESH_OutputTimeseries_csv}.
 #' @param layers Optional. A vector of the layers to be plotted. By default layers 1 though 6 are used.
 #'
 #' @return Returns a \pkg{ggplot2} line plot of the variable values (mm).
 #' @author Kevin Shook
-#' @seealso \code{\link{readOutputTimeseriesCSV}} \code{\link{basinStoragePlot}} \code{\link{basinSoilWaterIcePlot}}
+#' @seealso \code{\link{read_MESH_OutputTimeseries_csv}} \code{\link{basinStoragePlot}} \code{\link{basinSoilWaterIcePlot}}
 #' @export
 #'
 #' @examples \dontrun{
-#' waterBalance <- readOutputTimeseriesCSV("Basin_average_water_balance.csv")
+#' waterBalance <- read_MESH_OutputTimeseries_csv("Basin_average_water_balance.csv")
 #' p <- basinSoilWaterPlot(waterBalance)}
 basinSoilWaterPlot <- function(basinWaterBalance, layers = c(1, 2, 3, 4, 5, 6)){
   # declare ggplot variables

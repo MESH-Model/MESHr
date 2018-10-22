@@ -1,14 +1,14 @@
 #' Plots basin snow and rain in the canopy and ponded water
 #'
-#' @param basinWaterBalance Required. Data frame to be plotted. As read in by \code{readOutputTimeseriesCSV}.
+#' @param basinWaterBalance Required. Data frame to be plotted. As read in by \code{read_MESH_OutputTimeseries_csv}.
 #'
 #' @return Returns a \pkg{ggplot2} line plot of the basin variables (mm).
 #' @author Kevin Shook
-#' @seealso \code{\link{readOutputTimeseriesCSV}} \code{\link{basinStoragePlot}}
+#' @seealso \code{\link{read_MESH_OutputTimeseries_csv}} \code{\link{basinStoragePlot}}
 #' @export
 #'
 #' @examples \dontrun{
-#' waterBalance <- readOutputTimeseriesCSV("Basin_average_water_balance.csv")
+#' waterBalance <- read_MESH_OutputTimeseries_csv("Basin_average_water_balance.csv")
 #' p <- basinSnowRainPondedPlot(waterBalance)}
 
 basinSnowRainPondedPlot <- function(basinWaterBalance){

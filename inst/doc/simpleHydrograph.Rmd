@@ -28,7 +28,7 @@ the plot.
 The function requires a data frame of MESH flows. The first column must be an
 **R** date (named DATE) or a `POSIXct` datetime (named DATETIME). The easiest
 way to produce this data frame is by reading in the data using the function
-`readOutputTimeseriesCSV`. Functions will be added to read the output directly
+`read_MESH_OutputTimeseries_csv`. Functions will be added to read the output directly
 from the netCDF output.
 
 Note that you can subset the data to restrict the range plotted.

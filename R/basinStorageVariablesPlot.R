@@ -11,7 +11,7 @@
 #'   \item{FZWS}{Water equivalent of the volumetric frozen water content of the soil}
 #'   \item{ALWS}{Water equivalent of the volumetric liquid and frozen water contents of the soil, sum of LQWS and FZWS}
 #'   }
-#' @param basinWaterBalance Required. Data frame to be plotted. As read in by \code{readOutputTimeseriesCSV}.
+#' @param basinWaterBalance Required. Data frame to be plotted. As read in by \code{read_MESH_OutputTimeseries_csv}.
 #' @param varNames Optional. A vector of the names of the variables to be plotted. 
 #' If not specified, all of the variables listed above will be plotted.
 #' @param layers Optional. A vector of the layers to be plotted. By default 
@@ -19,11 +19,11 @@
 #'
 #' @return Returns a \pkg{ggplot2} stacked area time plot of the variable values (mm).
 #' @author Kevin Shook
-#' @seealso \code{\link{readOutputTimeseriesCSV}}
+#' @seealso \code{\link{read_MESH_OutputTimeseries_csv}}
 #' @export
 #'
 #' @examples \dontrun{
-#' waterBalance <- readOutputTimeseriesCSV("Basin_average_water_balance.csv")
+#' waterBalance <- read_MESH_OutputTimeseries_csv("Basin_average_water_balance.csv")
 #' p <- basinStorageVariablesPlot(waterBalance)
 #' # the plot can have a restricted date range
 #' startDate <- as.Date("2005-10-01", format = "%Y-%m-%d")

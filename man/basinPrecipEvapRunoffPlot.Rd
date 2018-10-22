@@ -7,7 +7,7 @@
 basinPrecipEvapRunoffPlot(basinWaterBalance)
 }
 \arguments{
-\item{basinWaterBalance}{Required. Data frame to be plotted. As read in by \code{readOutputTimeseriesCSV}.}
+\item{basinWaterBalance}{Required. Data frame to be plotted. As read in by \code{read_MESH_OutputTimeseries_csv}.}
 }
 \value{
 Returns a \pkg{ggplot2} line plot of the variable values (mm).
@@ -17,11 +17,11 @@ Plots basin precipitation evaporation and runoff
 }
 \examples{
 \dontrun{
-waterBalance <- readOutputTimeseriesCSV("Basin_average_water_balance.csv")
+waterBalance <- read_MESH_OutputTimeseries_csv("Basin_average_water_balance.csv")
 p <- basinPrecipEvapRunoffPlot(waterBalance)}
 }
 \seealso{
-\code{\link{readOutputTimeseriesCSV}} \code{\link{basinStoragePlot}} \code{\link{basinSoilWaterIcePlot}}
+\code{\link{read_MESH_OutputTimeseries_csv}} \code{\link{basinStoragePlot}} \code{\link{basinSoilWaterIcePlot}}
 }
 \author{
 Kevin Shook

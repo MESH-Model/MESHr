@@ -7,7 +7,7 @@
 basinSnowPlot(basinWaterBalance)
 }
 \arguments{
-\item{basinWaterBalance}{Required. Data frame to be plotted. As read in by \code{readOutputTimeseriesCSV}.}
+\item{basinWaterBalance}{Required. Data frame to be plotted. As read in by \code{read_MESH_OutputTimeseries_csv}.}
 }
 \value{
 Returns a \pkg{ggplot2} stacked line plot of the basin SWE (mm).
@@ -17,11 +17,11 @@ Plots basin snow water equivalent
 }
 \examples{
 \dontrun{
-waterBalance <- readOutputTimeseriesCSV("Basin_average_water_balance.csv")
+waterBalance <- read_MESH_OutputTimeseries_csv("Basin_average_water_balance.csv")
 p <- basinSnowPlot(waterBalance)}
 }
 \seealso{
-\code{\link{readOutputTimeseriesCSV}} \code{\link{basinStoragePlot}}
+\code{\link{read_MESH_OutputTimeseries_csv}} \code{\link{basinStoragePlot}}
 }
 \author{
 Kevin Shook

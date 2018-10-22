@@ -5,7 +5,7 @@
 #' not work with outside sources, such as WSC files. Because this function returns a 
 #' \pkg{ggplot} object, you can change its format in any way you like.
 #' The plots produced may be faceted using the commands \code{facet_wrap} or \code{facet_grid}.
-#' @param MESHvals Required. A data frame of output from a MESH run, as produced by \code{readOutputTimeseriesCSV}.
+#' @param MESHvals Required. A data frame of output from a MESH run, as produced by \code{read_MESH_OutputTimeseries_csv}.
 #' @param stationNames Optional. A vector of strings holding station names. If specified, the station names will 
 #' be used in the plots. Otherwise the MESH station numbers will be used.
 #' @param byStation Optional. If \code{TRUE} (the default) then the plots will be coloured according to the station names. You may want to set this to \code{FALSE} if you are facetting by station name.
@@ -19,7 +19,7 @@
 #' @return If successful, returns a \pkg{ggplot2} object. If unsuccessful, returns \code{FALSE}. The object can be facetted by the name of the station (the variable is called \code{station}). If the option \code{byYear = TRUE}, then the object can be facetted by the variable \code{YEAR}.
 #' @author Kevin Shook
 #' @note Specifying the calibration start and/or end dates will allow the resulting plot to be facetted by the variable \code{period}.
-#' @seealso \code{\link{readOutputTimeseriesCSV}} \code{\link{hydroStats}}
+#' @seealso \code{\link{read_MESH_OutputTimeseries_csv}} \code{\link{hydroStats}}
 #' @export
 #'
 #' @examples 

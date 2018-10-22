@@ -8,7 +8,7 @@ basinStoragePlot(basinWaterBalance)
 }
 \arguments{
 \item{basinWaterBalance}{Required. Data frame to be plotted. As read in by 
-\code{readOutputTimeseriesCSV}.}
+\code{read_MESH_OutputTimeseries_csv}.}
 }
 \value{
 Returns a \pkg{ggplot2} line plot of the value of \code{STG} (mm).
@@ -18,11 +18,11 @@ Plots total basin storage
 }
 \examples{
 \dontrun{
-waterBalance <- readOutputTimeseriesCSV("Basin_average_water_balance.csv")
+waterBalance <- read_MESH_OutputTimeseries_csv("Basin_average_water_balance.csv")
 p <- basinStoragePlot(waterBalance)}
 }
 \seealso{
-\code{\link{readOutputTimeseriesCSV}} \code{\link{basinStorageVariablesPlot}} \code{\link{basinSoilWaterIcePlot}}
+\code{\link{read_MESH_OutputTimeseries_csv}} \code{\link{basinStorageVariablesPlot}} \code{\link{basinSoilWaterIcePlot}}
 }
 \author{
 Kevin Shook

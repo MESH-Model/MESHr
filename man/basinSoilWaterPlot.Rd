@@ -7,7 +7,7 @@
 basinSoilWaterPlot(basinWaterBalance, layers = c(1, 2, 3, 4, 5, 6))
 }
 \arguments{
-\item{basinWaterBalance}{Required. Data frame to be plotted. As read in by \code{readOutputTimeseriesCSV}.}
+\item{basinWaterBalance}{Required. Data frame to be plotted. As read in by \code{read_MESH_OutputTimeseries_csv}.}
 
 \item{layers}{Optional. A vector of the layers to be plotted. By default layers 1 though 6 are used.}
 }
@@ -19,11 +19,11 @@ Plots basin soil liquid water
 }
 \examples{
 \dontrun{
-waterBalance <- readOutputTimeseriesCSV("Basin_average_water_balance.csv")
+waterBalance <- read_MESH_OutputTimeseries_csv("Basin_average_water_balance.csv")
 p <- basinSoilWaterPlot(waterBalance)}
 }
 \seealso{
-\code{\link{readOutputTimeseriesCSV}} \code{\link{basinStoragePlot}} \code{\link{basinSoilWaterIcePlot}}
+\code{\link{read_MESH_OutputTimeseries_csv}} \code{\link{basinStoragePlot}} \code{\link{basinSoilWaterIcePlot}}
 }
 \author{
 Kevin Shook

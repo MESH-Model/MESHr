@@ -9,7 +9,7 @@ simpleHydrograph(MESHvals, stationNames = "", byStation = TRUE,
   calEnd = "")
 }
 \arguments{
-\item{MESHvals}{Required. A data frame of output from a MESH run, as produced by \code{readOutputTimeseriesCSV}.}
+\item{MESHvals}{Required. A data frame of output from a MESH run, as produced by \code{read_MESH_OutputTimeseries_csv}.}
 
 \item{stationNames}{Optional. A vector of strings holding station names. If specified, the station names will 
 be used in the plots. Otherwise the MESH station numbers will be used.}
@@ -68,7 +68,7 @@ p5 <- p5 + scale_colour_manual(values = plotcols)
 p5
 }
 \seealso{
-\code{\link{readOutputTimeseriesCSV}} \code{\link{hydroStats}}
+\code{\link{read_MESH_OutputTimeseries_csv}} \code{\link{hydroStats}}
 }
 \author{
 Kevin Shook

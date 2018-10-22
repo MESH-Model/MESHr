@@ -4,7 +4,7 @@
 #' are computed by the function, rather than by using the MESH variables. This
 #' allows the plot to be used on a sub-set of the basin output data.
 #' @param basinWaterBalance Required. Data frame to be plotted. As read in by 
-#' \code{readOutputTimeseriesCSV}. Note that because the value of \code{DTSG} 
+#' \code{read_MESH_OutputTimeseries_csv}. Note that because the value of \code{DTSG} 
 #' (delta storage) can be negative, you need to set a threshold value much smaller than
 #' zero when you read in the values. 
 #' @param accumulate_delta_storage Optional. If \code{TRUE} (the default),  
@@ -13,11 +13,11 @@
 #' as they are assumed to be cumualtive values.
 #' @return Returns a \pkg{ggplot2} line plot of the variable values (mm).
 #' @author Kevin Shook
-#' @seealso \code{\link{readOutputTimeseriesCSV}} \code{\link{basinStoragePlot}} \code{\link{basinSoilWaterIcePlot}}
+#' @seealso \code{\link{read_MESH_OutputTimeseries_csv}} \code{\link{basinStoragePlot}} \code{\link{basinSoilWaterIcePlot}}
 #' @export
 #'
 #' @examples \dontrun{
-#' waterBalance <- readOutputTimeseriesCSV("Basin_average_water_balance.csv", 
+#' waterBalance <- read_MESH_OutputTimeseries_csv("Basin_average_water_balance.csv", 
 #' missingValueThreshold = -1e6)
 #' p <- basinWaterBalancePlot(waterBalance)}
 

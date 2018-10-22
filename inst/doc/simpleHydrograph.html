@@ -12,7 +12,7 @@
 
 <meta name="author" content="Kevin Shook" />
 
-<meta name="date" content="2018-10-11" />
+<meta name="date" content="2018-10-22" />
 
 <title>simpleHydrograph and hydroStats</title>
 
@@ -70,14 +70,14 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">simpleHydrograph and hydroStats</h1>
 <h4 class="author"><em>Kevin Shook</em></h4>
-<h4 class="date"><em>2018-10-11</em></h4>
+<h4 class="date"><em>2018-10-22</em></h4>
 
 
 
 <div id="simplehydrograph" class="section level2">
 <h2>simpleHydrograph</h2>
 <p>The <code>simpleHydrograph</code> function is intended to plot hydrographs from MESH output alone, i.e. without additional data being supplied from another source, such as WSC data. The function produces a <strong>ggplot2</strong> object, which can then be manipulated to customise the plot.</p>
-<p>The function requires a data frame of MESH flows. The first column must be an <strong>R</strong> date (named DATE) or a <code>POSIXct</code> datetime (named DATETIME). The easiest way to produce this data frame is by reading in the data using the function <code>readOutputTimeseriesCSV</code>. Functions will be added to read the output directly from the netCDF output.</p>
+<p>The function requires a data frame of MESH flows. The first column must be an <strong>R</strong> date (named DATE) or a <code>POSIXct</code> datetime (named DATETIME). The easiest way to produce this data frame is by reading in the data using the function <code>read_MESH_OutputTimeseries_csv</code>. Functions will be added to read the output directly from the netCDF output.</p>
 <p>Note that you can subset the data to restrict the range plotted.</p>
 <p>The simplest plot shows all of the data in a single un-facetted graph. The stations are denoted by colour, and the type of flow (i.e. measured or simulated), by line type. By default, the stations are labelled by their MESH numbers.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">simpleHydrograph</span>(MESH_streamflows)
