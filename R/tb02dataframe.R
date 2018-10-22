@@ -50,7 +50,19 @@ tb02dataframe <- function(tb0File = "",  values_only = TRUE, timezone = "", NAva
   written_by <- findRecord(header_lines, ":WrittenBy")
   creation_date <- findRecord(header_lines, ":CreationDate")
   
-  delta_t <- as.numeric(findRecord(header_lines, ":DeltaT"))
+  # check for non-integer Delta T
+  
+  delta_t_record <- findRecord(header_lines, ":DeltaT")
+  if (stringr::str_detect(delta_t_record, ":")) {
+    # split
+    hour_string <- stringr::str_split_fixed(delta_t_record, ":", n = 2)[1]
+    delta_t <- as.numeric(hour_string)
+  } else {
+    delta_t <- as.numeric(delta_t_record)
+  }
+  
+  
+  
   name <- findRecord(header_lines, ":Name")
   projection <- findRecord(header_lines, ":Projection")
   ellipsoid <- findRecord(header_lines, ":Ellipsoid")
