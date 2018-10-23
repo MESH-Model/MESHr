@@ -1,6 +1,6 @@
 #' MESH streamflow data
 #'
-#' @description A data frame containing MESH outputs for the Simonette river, as read in using the function \code{readOutputTimeSeriesCSV}.
+#' @description A data frame containing MESH outputs for the Simonette river, as read in using the function \code{read_MESH_OutputTimeSeries_csv}.
 #'
 #' @format A data frame with 4381 rows and 5 variables (including the datetime):
 #' \describe{

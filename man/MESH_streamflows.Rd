@@ -19,6 +19,6 @@ This data iwas obtained by running MESH.
 MESH_streamflows
 }
 \description{
-A data frame containing MESH outputs for the Simonette river, as read in using the function \code{readOutputTimeSeriesCSV}.
+A data frame containing MESH outputs for the Simonette river, as read in using the function \code{read_MESH_OutputTimeSeries_csv}.
 }
 \keyword{datasets}
