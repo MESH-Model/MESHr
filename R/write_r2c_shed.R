@@ -1,9 +1,9 @@
 #' Write MESH watershed data to r2c file
 #'
 #' @param basin Required. The values defining the basin parameters, as read in by 
-#' \code{r2c2basin}. Can either be and array or a raster brick.
+#' \code{read_r2c_shed}. Can either be and array or a raster brick.
 #' @param header Required. The header lines from the basin r2c file, as read in by 
-#' \code{r2c2basin}
+#' \code{read_r2c_shed}
 #' @param r2cFile Required. The file to be written.
 #'
 #' @return If successful, returns \code{TRUE}. If unsucessful, returns 
@@ -19,7 +19,7 @@
 #' # write as another file
 #' write_r2c_shed(shed$basin, shed$header_lines, "new_basin.r2c")
 #' }
-basin2r2c <- function(basin, header, r2cFile = "") {
+write_r2c_shed <- function(basin, header, r2cFile = "") {
   # check values
   if (class(basin[[1]]) == "RasterBrick") {
     basin_type <- "raster_brick"

@@ -1,12 +1,4 @@
-#' @title Finds record in r2c data specified by string
-#'
-#' @param recordLines Requred. Vector of lines from r2c file.
-#' @param string Required. Record name to searh for.
-#' @param ignore.case Optional. If \code{TRUE} (the default), 
-#' then case is ignored.
-#' @author Kevin Shook
-#' @return Returns trimmed record.
-
+# Finds record in r2c data specified by string
 findRecord <- function(recordLines, string, ignore.case = TRUE) {
   if (ignore.case) {
     linenum <- grep(string, recordLines, ignore.case = TRUE) 
@@ -27,24 +19,13 @@ findRecord <- function(recordLines, string, ignore.case = TRUE) {
   }  
 
 
-  
-
   # remove whitespace
   value <- stringr::str_trim(value)
   return(value)
 }
 
 
-#' @title Gets the Windows end of line characters
-#'
-#' @description Finds the end of line (eol) characters required for writing Windows files, such as CRHM obs files. No parameters are required. This is an internal \pkg{CRHMr} function and should \emph{never} need to be called directly.
-#' @return Returns the Windows end of line characters (cr and lf).
-#' @export
-#' @author Kevin Shook
-#' @note This function is used to make the creation of Windows-specific files work on all platforms. CRHM requires its obs and project files to use the Windows end of line characters, which are expressed differently on UNIX-based operating systems such as Linux and OSX.
-#' @examples 
-#' windowsEndOfLine <- win.eol()
-#' 
+# Gets the Windows end of line characters
 win.eol <- function(){
   # set line end characters for all OS
   if (stringr::str_detect(.Platform$OS.type, 
@@ -57,16 +38,7 @@ win.eol <- function(){
 }
 
 
-#' Parses a string containing numbers
-#'
-#' @param numString Required. A character string containing numbers separated by any number of spaces.
-#'
-#' @return Returns a numeric vector.
-#' @author Kevin Shook
-#' @export
-#'
-#' @examples
-#' parseNums(' 1  2 3   4     5 ')
+# Parses a string containing numbers
 parseNums <- function(numString){
   # remove padding
   numString <- stringr::str_trim(numString)
@@ -76,7 +48,7 @@ parseNums <- function(numString){
   double.spaces <- stringr::str_detect(numString, '  ')
   # replace all double spaces with single spaces
   
-  while (double.spaces){
+  while (double.spaces) {
     numString <- stringr::str_replace_all(numString, '  ', ' ' )
     double.spaces <- stringr::str_detect(numString, '  ')
   }
@@ -86,19 +58,8 @@ parseNums <- function(numString){
 }
 
 
-#' Parses a string containing several sub-strings
-#' @param textString Required. A character string containing strings separated by any number of spaces.
-#'
-#' @return Returns a character vector.
-#' @author Kevin Shook
-#' @export
-#'
-#' @examples
-#' parseText(' red  green    blue      black')
+# Parses a string containing several sub-strings
 parseText <- function(textString){
-  #
-  # returns a vector
-  
   # remove padding
   textString <- stringr::str_trim(textString)
   
@@ -107,11 +68,17 @@ parseText <- function(textString){
   double.spaces <- stringr::str_detect(textString, '  ')
   # replace all double spaces with single spaces
   
-  while (double.spaces){
+  while (double.spaces) {
     textString <- stringr::str_replace_all(textString, '  ', ' ' )
     double.spaces <- stringr::str_detect(textString, '  ')
   }
   
   texts <- unlist(stringr::str_split(textString, ' '))
   return(texts)
+}
+
+# see if variable is present in a data frame
+var_present <- function(dataframe, variable) {
+ result <-  variable %in% names(dataframe)
+ return(result)
 }
