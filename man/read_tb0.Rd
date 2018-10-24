@@ -36,7 +36,7 @@ file and column values, which pertain to individual columns.
 }
 \examples{
 \dontrun{
-qvals <- read_tb02("MESH_input_streamflow.tb0", NAvalue = -0.01, values_only = TRUE)
+qvals <- read_tb0("MESH_input_streamflow.tb0", NAvalue = -0.01, values_only = TRUE)
 }
 }
 \seealso{

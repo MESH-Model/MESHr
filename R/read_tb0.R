@@ -27,7 +27,7 @@
 #'
 #'
 #' @examples \dontrun{
-#' qvals <- read_tb02("MESH_input_streamflow.tb0", NAvalue = -0.01, values_only = TRUE)
+#' qvals <- read_tb0("MESH_input_streamflow.tb0", NAvalue = -0.01, values_only = TRUE)
 #' }
 read_tb0 <- function(tb0File = "",  values_only = TRUE, timezone = "", NAvalue = NULL) {
   if (tb0File == "") {
