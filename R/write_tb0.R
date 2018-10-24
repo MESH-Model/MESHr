@@ -239,7 +239,7 @@ write_tb0 <- function(values = NULL, column_meta = NULL, header = NULL,
       if (names(values)[1] == "datetime") {
         dt  <- difftime(values$datetime[2], values$datetime[1], units = "hours")
         dt <- abs(as.numeric(dt))
-        delta_t <- paste(":Delta ", dt, sep = "")
+        delta_t <- paste(":DeltaT ", dt, sep = "")
       } else {
         cat("Error: delta_t must be specified or data must be time series\n")
         return(FALSE)
