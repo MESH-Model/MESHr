@@ -17,7 +17,22 @@
 #' variable \code{datetime} as the time stamp. Note that the time series
 #' interval may be irregular. If \code{values_only = TRUE}, then
 #' the returned value will be a list conisting of the time series
-#' data frame and the header meta data as a list.
+#' data frame and the header meta data as a list, with the variables 
+#' \code{values} and \code{header_meta}, respectively. The meta data are:
+#'  \describe{
+#'  \item{variable}{type}
+#'  \item{station_site}{character}
+#'  \item{station_name}{character}
+#'  \item{station_number}{character}
+#'  \item{parameter_name}{character}
+#'  \item{parameter_type}{character}
+#'  \item{parameter_type_name}{character}
+#'  \item{time_series_name}{character}
+#'  \item{time_series_unit}{character}
+#'  \item{longitude}{numeric}
+#'  \item{latitude}{numeric}
+#'  }
+#'
 #' @export
 #' @author Kevin Shook
 #' @seealso \code{\link{read_MESH_OutputTimeseries_csv}} 
@@ -52,7 +67,8 @@ read_AEP_csv <- function(AEPfile = "", timezone = "", values_only = TRUE) {
   # read in rest of file
   values <- read.table(AEPfile, skip = 16, sep = ",", header = FALSE,
                        stringsAsFactors = FALSE,  
-                       na.strings = "-")
+                       na.strings = "---", 
+                       colClasses = c("character", "character", "numeric"))
   names(values) <- c("date", "time", "value")
   
   values$datetime <- paste(values$date, " ", values$time, sep = "")

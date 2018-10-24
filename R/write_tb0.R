@@ -217,8 +217,6 @@ write_tb0 <- function(values = NULL, column_meta = NULL, header = NULL,
         return(FALSE)
       }
     }
-    cat("Error: start_time must be specified or data must be time series\n")
-    return(FALSE)
   }
   
   header2 <- c(header2, start_time, "#")
@@ -247,8 +245,6 @@ write_tb0 <- function(values = NULL, column_meta = NULL, header = NULL,
         return(FALSE)
       }
     } 
-    cat("Error: delta_t must be specified or data must be time series\n")
-    return(FALSE)
   }
   
   header2 <- c(header2, delta_t)
