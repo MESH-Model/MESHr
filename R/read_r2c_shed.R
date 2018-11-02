@@ -81,17 +81,11 @@ read_r2c_shed <- function(r2cFile = "", values_only = TRUE, as_rasters = TRUE) {
   
   # data is following header
   end_header <-  grep(":EndHeader", r2c, fixed = TRUE)
-  data_lines <- r2c[-(1:end_header)]
   header_lines <- r2c[1:(end_header - 1)]
   
   
   # parse all nums
-  widths <- rep.int(19, xCount)
-  data_lines <- paste(data_lines, collapse = "\n")
-  
-  data_vals <- readr::read_fwf(data_lines,
-                                readr::fwf_widths(widths))
-  data_vals <- data.matrix(data_vals)
+  data_vals <- read.table(r2cFile, skip = end_header, header = FALSE)
 
   # now force into an array
    output_vals <- array(0, c(yCount, xCount, attribute_count))
