@@ -129,19 +129,34 @@ read_r2c_shed <- function(r2cFile = "", values_only = TRUE, as_rasters = TRUE) {
     
     # set layer names
     names(basin) <- attribute_names
-  }
-   
-   
-  if (!values_only) {
-    # assemble meta data
-    meta_data <- data.frame(attribute_names, attribute_type_names, 
-                            attribute_type_vals,
-                            stringsAsFactors = FALSE)
-    output_vals <- list(basin = output_vals, meta_data = meta_data, 
-                        header_lines = header_lines)
-    return(output_vals)
-  } else {
-    return(output_vals)
-  }
     
+    if (!values_only) {
+      # assemble meta data
+      meta_data <- data.frame(attribute_names, attribute_type_names, 
+                              attribute_type_vals,
+                              stringsAsFactors = FALSE)
+      return_vals <- list(basin = basin, meta_data = meta_data, 
+                          header_lines = header_lines)
+      return(return_vals)
+    } else {
+      # only return basin brick
+      return(basin)
+    }
+  } else {
+    # return values as an array
+    if (!values_only) {
+      # assemble meta data
+      meta_data <- data.frame(attribute_names, attribute_type_names, 
+                              attribute_type_vals,
+                              stringsAsFactors = FALSE)
+      return_vals <- list(basin = output_vals, meta_data = meta_data, 
+                          header_lines = header_lines)
+      return(return_vals)
+    } else {
+      # only return basin brick
+      return(output_vals)
+    } 
+
+  }
+
 }
