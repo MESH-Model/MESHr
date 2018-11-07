@@ -9,7 +9,7 @@
 #' savings time. Under Windows or OSX, you can use \option{etc/GMT+6} or 
 #' \option{etc/GMT+7} for Central Standard and Mountain Standard time. Under Linux
 #' you should use \option{Etc/GMT+6} or \option{Etc/GMT+7}.
-#' @param values_only ptional. If \code{TRUE} (the default), only the 
+#' @param values_only optional. If \code{TRUE} (the default), only the 
 #' time series values will be returned. If {FALSE}, the meta data will also be 
 #' returned.
 #'
@@ -38,7 +38,7 @@
 #' @seealso \code{\link{read_MESH_OutputTimeseries_csv}} 
 #' @examples \dontrun{
 #' precip <-  read_AEP_csv("05CA805 Skoki Lodge - PC - C.Merged - All.csv", 
-#' all_values = FALSE)
+#' values_only = FALSE)
 #' # show values
 #' head(precip$values)
 #' # show latitude
@@ -51,7 +51,12 @@ read_AEP_csv <- function(AEPfile = "", timezone = "", values_only = TRUE) {
   
   # read in header
   if (!values_only) {
-    header_lines <- readr::read_lines(AEPfile, skip = 0, n_max = 15)
+    con <- file(AEPfile)
+    header_lines <- readLines(con, n = 15, encoding = "latin1")
+    close(con)
+    
+    # remove not UTF-8
+    
     station_site <- findRecord(header_lines, "Station Site:")
     station_name <- findRecord(header_lines, "Station Name:")
     station_number <- findRecord(header_lines, "Station Number:")
@@ -59,7 +64,8 @@ read_AEP_csv <- function(AEPfile = "", timezone = "", values_only = TRUE) {
     parameter_type <- findRecord(header_lines, "Parameter Type:")
     parameter_type_name <- findRecord(header_lines, "Parameter Type Name:")
     time_series_name <- findRecord(header_lines, "Time series Name:")
-    time_series_unit <- findRecord(header_lines, "Time series Unit:")
+    time_series_unit <- findRecord(header_lines, 
+                                   "Time series Unit:")
     longitude <- as.numeric(findRecord(header_lines, "Longitude:"))
     latitude <- as.numeric(findRecord(header_lines, "Latitude:"))
   }
@@ -72,8 +78,11 @@ read_AEP_csv <- function(AEPfile = "", timezone = "", values_only = TRUE) {
   names(values) <- c("date", "time", "value")
   
   values$datetime <- paste(values$date, " ", values$time, sep = "")
-  values$datetime <- as.POSIXct(values$datetime, format = "%Y-%m-%d %H:%M:%S",
+  if (timezone != "")
+    values$datetime <- as.POSIXct(values$datetime, format = "%Y-%m-%d %H:%M:%S",
                                 tz = timezone)
+  else
+    values$datetime <- as.POSIXct(values$datetime, format = "%Y-%m-%d %H:%M:%S")
   
   values <- values[,c("datetime", "value")]
   

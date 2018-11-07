@@ -9,7 +9,7 @@
 
 findRecord <- function(recordLines, string, ignore.case = TRUE) {
   if (ignore.case) {
-    linenum <- grep(string, recordLines, ignore.case = TRUE) 
+    linenum <- grep(string, recordLines, ignore.case = TRUE, useBytes = TRUE) 
     record <- recordLines[linenum]
     
     pieces <- stringr::str_split_fixed(record, 
@@ -19,7 +19,7 @@ findRecord <- function(recordLines, string, ignore.case = TRUE) {
     value <- pieces[[2]]
   }
   else {
-    linenum <- grep(string, recordLines, fixed = TRUE) 
+    linenum <- grep(string, recordLines, fixed = TRUE, useBytes = TRUE) 
     # parse value from record
     record <- recordLines[linenum]
     pieces <- stringr::str_split_fixed(record, string, n = 2)

@@ -18,7 +18,7 @@ savings time. Under Windows or OSX, you can use \option{etc/GMT+6} or
 \option{etc/GMT+7} for Central Standard and Mountain Standard time. Under Linux
 you should use \option{Etc/GMT+6} or \option{Etc/GMT+7}.}
 
-\item{values_only}{ptional. If \code{TRUE} (the default), only the 
+\item{values_only}{optional. If \code{TRUE} (the default), only the 
 time series values will be returned. If {FALSE}, the meta data will also be 
 returned.}
 }
@@ -49,7 +49,7 @@ Reads csv file produced by Alberta Environment and Parks
 \examples{
 \dontrun{
 precip <-  read_AEP_csv("05CA805 Skoki Lodge - PC - C.Merged - All.csv", 
-all_values = FALSE)
+values_only = FALSE)
 # show values
 head(precip$values)
 # show latitude
