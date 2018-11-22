@@ -4,7 +4,8 @@
 \alias{distribPrecip}
 \title{Distributes precipitation in time}
 \usage{
-distribPrecip(LFprecip = NULL, HFprecip = NULL)
+distribPrecip(LFprecip = NULL, HFprecip = NULL,
+  zero_missing_HF = TRUE, period_threshold = 48)
 }
 \arguments{
 \item{LFprecip}{Required. A data frame of low temporal frequency (e.g. daily)
@@ -14,6 +15,15 @@ precipitation. The first column must be a POSIXct date/time called
 \item{HFprecip}{Required. A data frame of high temporal frequency 
 (e.g. hourly) precipitation. The first column must be a POSIXct date/time 
 called \code{datetime}. The second column must be the precipitation.}
+
+\item{zero_missing_HF}{Optional. If \code{TRUE} (the default) 
+missing high-frequency precipitation values are replaced with zeros.}
+
+\item{period_thresholds}{Length of maximum infilled period in hours. 
+Sequences of missing low-frequency values exceeding this length will be set
+to \code{NA_real_}, and the next low-frequency value will be assigned to
+the next high frequency interval. This is usually required when a gauge 
+is not reported for a seasonal period.}
 }
 \value{
 Returns a data frame of the adjusted high-frequency precipitation, 
@@ -28,8 +38,10 @@ than the model time step. This function distributes low-freqency precipitation
 (e.g. daily) according to a  set of high frequency precipitation 
 (e.g. hourly). The high-frequency values are summed to have the same time 
 intervals as the low-frequency data. The ratios of low/high freqency 
-precipiations are determined for each time step, and these ratios
-are multiplied by the high-frequency data
+precipitations are determined for each time step, and these ratios
+are multiplied by the high-frequency data. Where the high-frequency total
+precipitation is zero, the low-frequency data is spread evenly over the 
+high-frequency interval.
 }
 \examples{
 \dontrun{distributed <- distribPrecip(myPrecip[, c(1, 5)], 
