@@ -21,6 +21,8 @@ These packages are:
 - raster
 - rts
 - readr
+- sp
+- hydroTSM
 
 
 

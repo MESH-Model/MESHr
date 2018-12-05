@@ -8,7 +8,7 @@
 
 #' @references 
 #' To cite \pkg{MESHr} in publications, use the command \code{citation("MESHr")} to get the current version of the citation.\cr
-#' @import grid ggplot2 reshape2 stringr knitr raster rts 
+#' @import grid ggplot2 reshape2 stringr knitr raster rts
 #' @importFrom stats na.omit 
 #' @importFrom utils read.table write.table
 #' @importFrom readr read_fwf
@@ -16,4 +16,5 @@
 #' @importFrom sp CRS
 #' @importFrom hydroTSM hydrokrige
 #' @importFrom methods as
+#' @importFrom hydroGOF gof
 NULL
