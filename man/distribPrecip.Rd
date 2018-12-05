@@ -19,7 +19,7 @@ called \code{datetime}. The second column must be the precipitation.}
 \item{zero_missing_HF}{Optional. If \code{TRUE} (the default) 
 missing high-frequency precipitation values are replaced with zeros.}
 
-\item{period_thresholds}{Length of maximum infilled period in hours. 
+\item{period_threshold}{Length of maximum infilled period in hours. 
 Sequences of missing low-frequency values exceeding this length will be set
 to \code{NA_real_}, and the next low-frequency value will be assigned to
 the next high frequency interval. This is usually required when a gauge 

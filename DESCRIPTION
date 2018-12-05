@@ -2,7 +2,7 @@ Package: MESHr
 Type: Package
 Title: pre- and post processing for MESH
 Version: 0.1.5
-Date: 2018-11-22
+Date: 2018-12-05
 Author: Al Pietroniro, Environment Canada
 Maintainer: Kevin Shook <kevin.shook@usask.ca>
 Description: This package contains functions for pre- and post- processing data for the MESH model.

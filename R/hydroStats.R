@@ -112,22 +112,32 @@ hydroStats <- function(MESHvals, stationNames = "", calStart = "",
       meas <- MESHvals[, meas_col]
       sim <- MESHvals[, sim_col]
       
-      g <- hydroGOF::gof(sim, meas, na.rm = removeMissing,
-                         do.spearman = doSpearman,
-                         do.pbfsc = doPBFDC,
-                         j = j,
-                         norm = norm,
-                         s = s,
-                         method = method,
-                         lQ.thr = lQ.thr,
-                         hQ.thr = hQ.thr,
-                         digits = digits)
+      # check meas and sim to make sure that they can be used
+      if (all(is.na(meas)) | all(is.na(sim)) |
+          all(meas <= 0, na.rm = TRUE) | all(meas <= 0, na.rm = TRUE)) {
+        cat("Error: No values to use for calculations\n")
+        return(FALSE)
+      } else {
+        
+        g <- hydroGOF::gof(sim, meas, na.rm = removeMissing,
+                           do.spearman = doSpearman,
+                           do.pbfsc = doPBFDC,
+                           j = j,
+                           norm = norm,
+                           s = s,
+                           method = method,
+                           lQ.thr = lQ.thr,
+                           hQ.thr = hQ.thr,
+                           digits = digits)
         
         g <- as.data.frame(t(g))
+      }
+      
+
         g$station <- tempstation
         
         if (i == 1) {
-          if (length(stationNames) >= numStations) {
+          if (length(stationNames) >= numStations & all(stationNames != "")) {
             g$station <- stationNames[i]
           } else {
             g$station <- i
@@ -135,7 +145,7 @@ hydroStats <- function(MESHvals, stationNames = "", calStart = "",
           
           gvals <- g
         } else {
-          if (length(stationNames) >= numStations) {
+          if (length(stationNames) >= numStations & all(stationNames != "")) {
             g$station <- stationNames[i]
           } else {
             g$station <- i
@@ -175,7 +185,7 @@ hydroStats <- function(MESHvals, stationNames = "", calStart = "",
         g$station <- tempstation
         
         if (i == 1) {
-          if (length(stationNames) >= numStations) {
+          if (length(stationNames) >= numStations & all(stationNames != "")) {
             g$station <- stationNames[i]
           } else {
             g$station <- i
@@ -183,7 +193,7 @@ hydroStats <- function(MESHvals, stationNames = "", calStart = "",
           
           gvals1 <- g
         } else {
-          if (length(stationNames) >= numStations) {
+          if (length(stationNames) >= numStations & all(stationNames != "")) {
             g$station <- stationNames[i]
           } else {
             g$station <- i
@@ -213,7 +223,7 @@ hydroStats <- function(MESHvals, stationNames = "", calStart = "",
         g$station <- tempstation
         
         if (i == 1) {
-          if (length(stationNames) >= numStations) {
+          if (length(stationNames) >= numStations & all(stationNames != "")) {
             g$station <- stationNames[i]
           } else {
             g$station <- i
@@ -221,7 +231,7 @@ hydroStats <- function(MESHvals, stationNames = "", calStart = "",
           
           gvals2 <- g
         } else {
-          if (length(stationNames) >= numStations) {
+          if (length(stationNames) >= numStations & all(stationNames != "")) {
             g$station <- stationNames[i]
           } else {
             g$station <- i
