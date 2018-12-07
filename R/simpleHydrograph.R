@@ -16,6 +16,7 @@
 #' @param sim Optional. Should the simulated values be plotted? Default is \code{TRUE}. If \code{FALSE}, they will be omitted.
 #' @param calStart Optional. The start date of the calibration period. Must be a string in the format \option{yyyy-mm-dd}. If specified, values on and after this date will be designated as the \code{Calibration} period. The remaining values will be designated as the \code{Validation} period.
 #' @param calEnd Optional. The start date of the calibration period. Must be a string in the format \option{yyyy-mm-dd}. If specified, values on and after this date will be designated as the \code{Calibration} period. The remaining values will be designated as the \code{Validation} period.
+#' @param alpha Optional. Sets the alpha channel (transparency) of the plots. The default value is \code{1}, i.e. opaque. Setting \code{alpha} to less than 1 makes the plots transparent, which can be useful to see overlapping hydrographs.
 #' @return If successful, returns a \pkg{ggplot2} object. If unsuccessful, returns \code{FALSE}. The object can be facetted by the name of the station (the variable is called \code{station}). If the option \code{byYear = TRUE}, then the object can be facetted by the variable \code{YEAR}.
 #' @author Kevin Shook
 #' @note Specifying the calibration start and/or end dates will allow the resulting plot to be facetted by the variable \code{period}.
@@ -49,7 +50,7 @@
 #' p5
 simpleHydrograph <- function(MESHvals, stationNames = "", byStation = TRUE, 
                              byYear = FALSE, meas = TRUE, sim = TRUE, calStart = "",
-                             calEnd = "") {
+                             calEnd = "", alpha = 1) {
   # assign ggplot variables
   DATE <- NULL
   value <- NULL
@@ -139,7 +140,7 @@ simpleHydrograph <- function(MESHvals, stationNames = "", byStation = TRUE,
 
       p <- ggplot2::ggplot(melted, ggplot2::aes(DATE, value, colour = station, 
                                                 linetype = type)) +
-        ggplot2::geom_line() +
+        ggplot2::geom_line(alpha = alpha) +
         ggplot2::xlab("") +
         ggplot2::ylab(expression(paste("Discharge (m", ""^{3}, "/s)", 
                                        sep = ""))) 
@@ -147,7 +148,7 @@ simpleHydrograph <- function(MESHvals, stationNames = "", byStation = TRUE,
     
     } else if (!byYear & !byStation) {
       p <- ggplot(melted, ggplot2::aes(DATE, value, colour = type)) +
-        ggplot2::geom_line() +
+        ggplot2::geom_line(alpha = alpha) +
         ggplot2::xlab("") +
         ggplot2::ylab(expression(paste("Discharge (m", ""^{3}, "/s)", 
                                        sep = ""))) +
@@ -156,7 +157,7 @@ simpleHydrograph <- function(MESHvals, stationNames = "", byStation = TRUE,
       return(p)
     } else if (!byStation & byYear) {
         p <- ggplot(melted, ggplot2::aes(DATE, value, colour = type)) +
-          ggplot2::geom_line() +
+          ggplot2::geom_line(alpha = alpha) +
           ggplot2::xlab("") +
           ggplot2::ylab(expression(paste("Discharge (m", ""^{3}, "/s)", 
                                          sep = ""))) +
@@ -166,7 +167,7 @@ simpleHydrograph <- function(MESHvals, stationNames = "", byStation = TRUE,
     } else if (byStation & byYear) {
         p <- ggplot(melted, ggplot2::aes(DATE, value, colour = station, 
                                          linetype = type)) +
-          ggplot2::geom_line() +
+          ggplot2::geom_line(alpha = alpha) +
           ggplot2::xlab("") +
           ggplot2::ylab(expression(paste("Discharge (m", ""^{3}, "/s)", 
                                          sep = ""))) +
@@ -226,7 +227,7 @@ simpleHydrograph <- function(MESHvals, stationNames = "", byStation = TRUE,
       if (!byYear & byStation) {
         p <- ggplot2::ggplot(melted, ggplot2::aes(DATETIME, value, colour = station, 
                                                   linetype = type)) +
-          ggplot2::geom_line() +
+          ggplot2::geom_line(alpha = alpha) +
           ggplot2::xlab("") +
           ggplot2::ylab(expression(paste("Discharge (m", ""^{3}, "/s)", 
                                          sep = ""))) 
@@ -234,7 +235,7 @@ simpleHydrograph <- function(MESHvals, stationNames = "", byStation = TRUE,
         
       } else if (!byYear & !byStation) {
         p <- ggplot(melted, ggplot2::aes(DATETIME, value, colour = type)) +
-          ggplot2::geom_line() +
+          ggplot2::geom_line(alpha = alpha) +
           ggplot2::xlab("") +
           ggplot2::ylab(expression(paste("Discharge (m", ""^{3}, "/s)", 
                                          sep = ""))) +
@@ -243,7 +244,7 @@ simpleHydrograph <- function(MESHvals, stationNames = "", byStation = TRUE,
         return(p)
       } else if (!byStation & byYear) {
         p <- ggplot(melted, ggplot2::aes(DATETIME, value, colour = type)) +
-          ggplot2::geom_line() +
+          ggplot2::geom_line(alpha = alpha) +
           ggplot2::xlab("") +
           ggplot2::ylab(expression(paste("Discharge (m", ""^{3}, "/s)", 
                                          sep = ""))) +
@@ -253,7 +254,7 @@ simpleHydrograph <- function(MESHvals, stationNames = "", byStation = TRUE,
       } else if (byStation & byYear) {
         p <- ggplot(melted, ggplot2::aes(DATETIME, value, colour = station, 
                                          linetype = type)) +
-          ggplot2::geom_line() +
+          ggplot2::geom_line(alpha = alpha) +
           ggplot2::xlab("") +
           ggplot2::ylab(expression(paste("Discharge (m", ""^{3}, "/s)", 
                                          sep = ""))) +

@@ -18,10 +18,11 @@
 #' @param elevs Required. A data frame of station elevations. Note that 
 #' the first column must contain the station names (which must be the same as
 #' in the air temperatures), and the second column must contain the elevation (in m).
-
 #'
 #' @return If successful, returns a data frame with 24 rows (one for each hour), and
-#' 12 columns (one for each month) of the lapse ratge
+#' 12 columns (one for each month), containing the lapse rates.
+#' @author Kevin Shook
+#' @seealso \code{\link{grid_temp}} \code{\link{read_tb0}}
 #' @export
 #'
 #' @examples \dontrun{

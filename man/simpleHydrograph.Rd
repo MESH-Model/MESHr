@@ -6,7 +6,7 @@
 \usage{
 simpleHydrograph(MESHvals, stationNames = "", byStation = TRUE,
   byYear = FALSE, meas = TRUE, sim = TRUE, calStart = "",
-  calEnd = "")
+  calEnd = "", alpha = 1)
 }
 \arguments{
 \item{MESHvals}{Required. A data frame of output from a MESH run, as produced by \code{read_MESH_OutputTimeseries_csv}.}
@@ -27,6 +27,8 @@ this means that the dates are all plotted using the year 2000, so you will see s
 \item{calStart}{Optional. The start date of the calibration period. Must be a string in the format \option{yyyy-mm-dd}. If specified, values on and after this date will be designated as the \code{Calibration} period. The remaining values will be designated as the \code{Validation} period.}
 
 \item{calEnd}{Optional. The start date of the calibration period. Must be a string in the format \option{yyyy-mm-dd}. If specified, values on and after this date will be designated as the \code{Calibration} period. The remaining values will be designated as the \code{Validation} period.}
+
+\item{alpha}{Optional. Sets the alpha channel (transparency) of the plots. The default value is \code{1}, i.e. opaque. Setting \code{alpha} to less than 1 makes the plots transparent, which can be useful to see overlapping hydrographs.}
 }
 \value{
 If successful, returns a \pkg{ggplot2} object. If unsuccessful, returns \code{FALSE}. The object can be facetted by the name of the station (the variable is called \code{station}). If the option \code{byYear = TRUE}, then the object can be facetted by the variable \code{YEAR}.

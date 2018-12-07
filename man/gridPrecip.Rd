@@ -5,28 +5,34 @@
 \title{Grids station precipitation}
 \usage{
 gridPrecip(precip = NULL, shed_raster = NULL, IDW_file = NULL,
-  quiet = TRUE)
+  quiet = TRUE, progress_bar = TRUE)
 }
 \arguments{
-\item{precip}{Required. A list containing 3 elements: 1. the header meta data, 
+\item{precip}{Required. A list containing 3 elements: 1. the header meta data,
 2. the column meta data, and 3. the precipitation values (in mm). These values
-are returned automatically by the \pkg{MESHr} command \code{read_tb0}.}
+are returned automatically by the \pkg{MESHr} command \code{read_tb0}. Note
+that the precipitation values are in mm.}
 
-\item{shed_raster}{Required. A \code{RasterBrick} object describing the MESH basin. 
-This can be created using the \pkg{MESHr} command \code{read_r2c_shed} with the 
+\item{shed_raster}{Required. A \code{RasterBrick} object describing the MESH basin.
+This can be created using the \pkg{MESHr} command \code{read_r2c_shed} with the
 parameter \code{as_rasters = TRUE}.}
 
-\item{IDW_file}{Required. Output file which holds gridded precipitation for all
+\item{IDW_file}{Required. Name of the output file which holds gridded precipitation for all
 time steps.}
 
-\item{quiet}{Optional. If \code{TRUE} (the default) messages are suppressed. 
+\item{quiet}{Optional. If \code{TRUE} (the default), messages are suppressed.
 If \code{FALSE}, the time interval and messages from each gridding are listed.}
+
+\item{progressBar}{Optional. If \code{TRUE} (the default), a progress bar is
+displayed showing the completed fraction of the \code{precip}.}
 }
 \value{
-If unsuccessful, returns \code{FALSE}. If successful, returns 
-\code{TRUE} and the gridded precipitation values are written to the 
+If unsuccessful, returns \code{FALSE}. If successful, returns
+\code{TRUE} and the gridded precipitation values are written to the
 \code{IDW_file}. Note that each interval's precipitation is written as it
-is gridded. This saves on memory, but can be quite slow.
+is gridded. This saves on memory, and will save at least some of the values
+in case there is a crash, but is slower. The gridded precipitation
+is in mm/s.
 }
 \description{
 Grids station interval precipitation values, so that they can
@@ -40,5 +46,12 @@ precip <- read_tb0(hourly_precip_file, values_only = FALSE, timezone = "Etc/GMT+
 shedfile <- "RedDeer_MESH_drainage_database.r2c"
 shed_raster <- read_r2c_shed(shedfile, as_rasters = TRUE, values_only = TRUE)
 IDW_file <- "RedDeerPrecip.idw"
-gridPrecip(precip, shed_raster, IDW_file)}
+gridPrecip(precip, shed_raster, IDW_file)
+}
+}
+\seealso{
+\code{\link{gridTemp}} \code{\link{read_r2c_shed}} \code{\link{read_tb0}}
+}
+\author{
+Kevin Shook
 }

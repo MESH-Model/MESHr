@@ -18,7 +18,7 @@ in the air temperatures), and the second column must contain the elevation (in m
 }
 \value{
 If successful, returns a data frame with 24 rows (one for each hour), and
-12 columns (one for each month) of the lapse ratge
+12 columns (one for each month), containing the lapse rates.
 }
 \description{
 This function calculates basin-wide historical lapse rates, by
@@ -35,4 +35,10 @@ K/m.
 \examples{
 \dontrun{
 lapse_rates <- basinLapseRates(temperatures, elevations)}
+}
+\seealso{
+\code{\link{grid_temp}} \code{\link{read_tb0}}
+}
+\author{
+Kevin Shook
 }
