@@ -40,7 +40,7 @@
 #' set to this value. The default is 313.15 K, or 40 C.
 #' @param quiet Optional. If \code{TRUE} (the default) messages are suppressed. 
 #' If \code{FALSE}, the time interval and messages from each gridding are listed.
-#'@param progressBar Optional. If \code{TRUE} (the default), a progress bar is
+#'@param progress_bar Optional. If \code{TRUE} (the default), a progress bar is
 #' displayed showing the completed fraction of the \code{temp}.
 #' 
 #' @return If unsuccessful, returns \code{FALSE}. If successful, returns 
@@ -268,7 +268,7 @@ gridTemp <- function(temp = NULL, shed_raster = NULL,
     cat(":EndFrame", eol, file = IDW_file, append = TRUE)
     
     if (progress_bar) {
-      txtProgressBar(
+      utils::txtProgressBar(
         min = 0, max = num_rows, initial = i, width = 30,
         style = 3)
     }

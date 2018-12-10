@@ -22,7 +22,7 @@
 #' @return If successful, returns a data frame with 24 rows (one for each hour), and
 #' 12 columns (one for each month), containing the lapse rates.
 #' @author Kevin Shook
-#' @seealso \code{\link{grid_temp}} \code{\link{read_tb0}}
+#' @seealso \code{\link{gridTemp}} \code{\link{read_tb0}}
 #' @export
 #'
 #' @examples \dontrun{

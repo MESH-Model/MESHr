@@ -37,7 +37,7 @@ K/m.
 lapse_rates <- basinLapseRates(temperatures, elevations)}
 }
 \seealso{
-\code{\link{grid_temp}} \code{\link{read_tb0}}
+\code{\link{gridTemp}} \code{\link{read_tb0}}
 }
 \author{
 Kevin Shook

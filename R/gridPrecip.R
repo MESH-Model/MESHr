@@ -15,7 +15,7 @@
 #' time steps.
 #' @param quiet Optional. If \code{TRUE} (the default), messages are suppressed.
 #' If \code{FALSE}, the time interval and messages from each gridding are listed.
-#' @param progressBar Optional. If \code{TRUE} (the default), a progress bar is
+#' @param progress_bar Optional. If \code{TRUE} (the default), a progress bar is
 #' displayed showing the completed fraction of the \code{precip}.
 #' 
 #' @return If unsuccessful, returns \code{FALSE}. If successful, returns
@@ -173,7 +173,7 @@ gridPrecip <- function(precip = NULL, shed_raster = NULL,
     cat(":EndFrame", eol, file = IDW_file, append = TRUE)
 
     if (progress_bar) {
-      txtProgressBar(
+      utils::txtProgressBar(
         min = 0, max = num_rows, initial = i, width = 30,
         style = 3)
     }

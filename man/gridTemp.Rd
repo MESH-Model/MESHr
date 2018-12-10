@@ -45,7 +45,7 @@ set to this value. The default is 313.15 K, or 40 C.}
 \item{quiet}{Optional. If \code{TRUE} (the default) messages are suppressed. 
 If \code{FALSE}, the time interval and messages from each gridding are listed.}
 
-\item{progressBar}{Optional. If \code{TRUE} (the default), a progress bar is
+\item{progress_bar}{Optional. If \code{TRUE} (the default), a progress bar is
 displayed showing the completed fraction of the \code{temp}.}
 }
 \value{

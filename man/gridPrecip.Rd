@@ -23,7 +23,7 @@ time steps.}
 \item{quiet}{Optional. If \code{TRUE} (the default), messages are suppressed.
 If \code{FALSE}, the time interval and messages from each gridding are listed.}
 
-\item{progressBar}{Optional. If \code{TRUE} (the default), a progress bar is
+\item{progress_bar}{Optional. If \code{TRUE} (the default), a progress bar is
 displayed showing the completed fraction of the \code{precip}.}
 }
 \value{
