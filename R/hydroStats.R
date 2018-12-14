@@ -13,6 +13,11 @@
 #' @param digits Optional. The number of decimal places for rounding goodness of fit statistics. If \code{0} the default, then it is not set. Default value is \code{2}. Note that percentages like NRMSE and PBIAS will only use a maximum of one decimal place.
 #' @param doSpearman Optional. Should Spearman correlation be computed? Default is \code{FALSE}.
 #' @param doPBFDC Optional. Should percent bias of slope of the midsegment of the FDC be computed? Default is \code{FALSE}. 
+#' @param doLogNSE Optional. Should the NSE of the log-transformed flows be calculated? 
+#' Default is \code{TRUE}.
+#' @param epsilon Optional. Value to be added to flows when calculating LogNSE, to prevent
+#' calculating the log of zero. The default is \option{Pushpalatha2012}, which is
+#' 1 percent of the mean observed values. A number may aslo be specified.
 #' @param j Optional. Argument passed to the \code{mNSE} function in \pkg{hydroGOF}.
 #' @param norm Optional. Argument passed to the \code{nrmse} function in \pkg{hydroGOF}.
 #' @param s Optional. Argument passed to the \code{KGE} function in \pkg{hydroGOF}.
@@ -46,6 +51,7 @@
 #'   \item{bR2}{R2 multiplied by the coefficient of the regression line between \code{sim} and \code{obs} \cr ( 0 <= bR2 #'   <= 1 )}
 #'   \item{KGE}{Kling-Gupta efficiency between \code{sim} and \code{obs} \cr ( 0 <= KGE <= 1 )}
 #'   \item{VE}{Volumetric efficiency between \code{sim} and \code{obs} \cr ( -Inf <= VE <= 1)}
+#'   \item{LogNSE}{NSE of log-transformed flows, if selected}
 #' }
 #' If the calibration period is specified, then statistics will be computed separately for the Calibration and Validation periods. The period names and dates will be specified in additional columns.
 #' @author Kevin Shook
@@ -61,11 +67,14 @@ hydroStats <- function(MESHvals, stationNames = "", calStart = "",
                        calEnd = "", removeMissing = TRUE, 
                        doSpearman = FALSE,
                        doPBFDC = FALSE,
+                       doLogNSE = TRUE,
+                       epsilon = "Pushpalatha2012",
                        digits = 2,
                        j = 1, 
                        norm = "sd", s = c(1, 1, 1), 
                        method = c("2009", "2012"), 
                        lQ.thr = 0.7, hQ.thr = 0.2) {
+  
   vars <- names(MESHvals)
   if (vars[1] != "DATE" & vars[1] != "DATETIME") {
     cat('Error: not a time series date frame\n')
@@ -81,7 +90,6 @@ hydroStats <- function(MESHvals, stationNames = "", calStart = "",
   } else {
     tempstation <- 0
   }
-  
   
   # check for periods
   if (calEnd != "") {
@@ -131,8 +139,25 @@ hydroStats <- function(MESHvals, stationNames = "", calStart = "",
                            digits = digits)
         
         g <- as.data.frame(t(g))
-      }
-      
+        
+        # do log NSE if required
+        if (doLogNSE) {
+          if (is.numeric(epsilon)) {
+            if (epsilon > 0) {
+              epsilon_value <- epsilon
+              l_nse <- hydroGOF::NSE(sim, meas, na.rm = removeMissing,
+                                     FUN = log10, epsilon = "other",
+                                     epsilon.value = epsilon_value)
+            } else {
+              l_nse <- hydroGOF::NSE(sim, meas, na.rm = removeMissing,
+                                     FUN = log10, epsilon = "0")
+            }
+          } else {
+            l_nse <- hydroGOF::NSE(sim, meas, na.rm = removeMissing,
+                                   FUN = log10, epsilon = epsilon)
+          }
+          g$LogNSE <- l_nse 
+        }
 
         g$station <- tempstation
         
@@ -154,6 +179,7 @@ hydroStats <- function(MESHvals, stationNames = "", calStart = "",
           gvals <- rbind(gvals, g)
         }
       }  # for loop
+    } 
     # move station to column 1
     cols <- ncol(gvals)
     gvals <- gvals[, c(cols, 1:(cols - 1))]
@@ -182,6 +208,25 @@ hydroStats <- function(MESHvals, stationNames = "", calStart = "",
                            digits = digits)
         
         g <- as.data.frame(t(g))
+        
+        if (doLogNSE) {
+          if (is.numeric(epsilon)) {
+            if (epsilon > 0) {
+              epsilon_value <- epsilon
+              l_nse <- hydroGOF::NSE(sim, meas, na.rm = removeMissing,
+                                     FUN = log10, epsilon = "other",
+                                     epsilon.value = epsilon_value)
+            } else {
+              l_nse <- hydroGOF::NSE(sim, meas, na.rm = removeMissing,
+                                     FUN = log10, epsilon = "0")
+            }
+          } else {
+            l_nse <- hydroGOF::NSE(sim, meas, na.rm = removeMissing,
+                                   FUN = log10, epsilon = epsilon)
+          }
+          g$LogNSE <- l_nse 
+        }
+        
         g$station <- tempstation
         
         if (i == 1) {
@@ -220,6 +265,24 @@ hydroStats <- function(MESHvals, stationNames = "", calStart = "",
                            hQ.thr = hQ.thr,
                            digits = digits)
         g <- as.data.frame(t(g))
+
+        if (doLogNSE) {
+          if (is.numeric(epsilon)) {
+            if (epsilon > 0) {
+              epsilon_value <- epsilon
+              l_nse <- hydroGOF::NSE(sim, meas, na.rm = removeMissing,
+                                     FUN = log10, epsilon = "other",
+                                     epsilon.value = epsilon_value)
+            } else {
+              l_nse <- hydroGOF::NSE(sim, meas, na.rm = removeMissing,
+                                     FUN = log10, epsilon = "0")
+            }
+          } else {
+            l_nse <- hydroGOF::NSE(sim, meas, na.rm = removeMissing,
+                                   FUN = log10, epsilon = epsilon)
+          }
+          g$LogNSE <- l_nse 
+        }
         g$station <- tempstation
         
         if (i == 1) {

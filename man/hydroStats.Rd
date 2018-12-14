@@ -6,8 +6,9 @@
 \usage{
 hydroStats(MESHvals, stationNames = "", calStart = "", calEnd = "",
   removeMissing = TRUE, doSpearman = FALSE, doPBFDC = FALSE,
-  digits = 2, j = 1, norm = "sd", s = c(1, 1, 1),
-  method = c("2009", "2012"), lQ.thr = 0.7, hQ.thr = 0.2)
+  doLogNSE = TRUE, epsilon = "Pushpalatha2012", digits = 2, j = 1,
+  norm = "sd", s = c(1, 1, 1), method = c("2009", "2012"),
+  lQ.thr = 0.7, hQ.thr = 0.2)
 }
 \arguments{
 \item{MESHvals}{Required. A data frame of output from a MESH run, as produced by \code{readOutputTimeseriesCSV}.}
@@ -24,6 +25,13 @@ be used in the returned data frame, otherwise the MESH station numbers will be u
 \item{doSpearman}{Optional. Should Spearman correlation be computed? Default is \code{FALSE}.}
 
 \item{doPBFDC}{Optional. Should percent bias of slope of the midsegment of the FDC be computed? Default is \code{FALSE}.}
+
+\item{doLogNSE}{Optional. Should the NSE of the log-transformed flows be calculated? 
+Default is \code{TRUE}.}
+
+\item{epsilon}{Optional. Value to be added to flows when calculating LogNSE, to prevent
+calculating the log of zero. The default is \option{Pushpalatha2012}, which is
+1 percent of the mean observed values. A number may aslo be specified.}
 
 \item{digits}{Optional. The number of decimal places for rounding goodness of fit statistics. If \code{0} the default, then it is not set. Default value is \code{2}. Note that percentages like NRMSE and PBIAS will only use a maximum of one decimal place.}
 
@@ -66,6 +74,7 @@ Returns a data frame with the following variables:
   \item{bR2}{R2 multiplied by the coefficient of the regression line between \code{sim} and \code{obs} \cr ( 0 <= bR2 #'   <= 1 )}
   \item{KGE}{Kling-Gupta efficiency between \code{sim} and \code{obs} \cr ( 0 <= KGE <= 1 )}
   \item{VE}{Volumetric efficiency between \code{sim} and \code{obs} \cr ( -Inf <= VE <= 1)}
+  \item{LogNSE}{NSE of log-transformed flows, if selected}
 }
 If the calibration period is specified, then statistics will be computed separately for the Calibration and Validation periods. The period names and dates will be specified in additional columns.
 }
