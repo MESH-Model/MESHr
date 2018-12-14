@@ -23,6 +23,7 @@ These packages are:
 - readr
 - sp
 - hydroTSM
+- plyr
 
 
 
