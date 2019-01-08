@@ -12,20 +12,20 @@ repository to find out about each new version.
 ### Dependencies
 MESHr depends on several other packages, which you need to install first, from CRAN, before installing MESHr.
 These packages are:
- - grid
- - ggplot2
- - stringr
- - knitr
- - reshape2
- - hydroGOF
- - raster
- - rts
- - readr
- - stats
- - hydroTSM
- - sp
- - methods
- - plyr
+- grid
+- ggplot2
+- stringr
+- reshape2
+- knitr
+- hydroGOF
+- raster
+- rts
+- readr
+- sp
+- hydroTSM
+- plyr
+
+
 
 To install the dependencies, you can use the menu command **Packages | Install** 
 in Rstudio, or the command install.packages as in
