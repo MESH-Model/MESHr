@@ -79,7 +79,6 @@ read_MESH_OutputTimeseries_csv <- function(outputFile, timezone = "", missingVal
       vals[vals < missingValueThreshold] <- NA_real_
       returned_df[,-1] <- vals
       return(returned_df)
-      return(returned_df)
     } else {
       DATETIME <-  paste(output$YEAR, "-", output$DAY, " ",
                          output$HOUR, sep = "")
@@ -90,7 +89,6 @@ read_MESH_OutputTimeseries_csv <- function(outputFile, timezone = "", missingVal
       vals <- returned_df[,-1]
       vals[vals < missingValueThreshold] <- NA_real_
       returned_df[,-1] <- vals
-      return(returned_df)
       return(returned_df)
     }
   }
