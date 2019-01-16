@@ -4,14 +4,19 @@
 \alias{gridPrecip}
 \title{Grids station precipitation}
 \usage{
-gridPrecip(precip = NULL, shed_raster = NULL, IDW_file = NULL,
-  quiet = TRUE, progress_bar = TRUE)
+gridPrecip(precip = NULL, source_file_name = "unknown",
+  shed_raster = NULL, IDW_file = NULL, quiet = TRUE,
+  progress_bar = TRUE)
 }
 \arguments{
 \item{precip}{Required. A list containing 3 elements: 1. the header meta data,
 2. the column meta data, and 3. the precipitation values (in mm). These values
 are returned automatically by the \pkg{MESHr} command \code{read_tb0}. Note
 that the precipitation values are in mm.}
+
+\item{source_file_name}{Required. The name of the original \code{.tb0} source file. 
+Default value is \code{unknown}. The name of the source file is written to
+the \code{r2c} file header.}
 
 \item{shed_raster}{Required. A \code{RasterBrick} object describing the MESH basin.
 This can be created using the \pkg{MESHr} command \code{read_r2c_shed} with the
@@ -45,8 +50,9 @@ hourly_precip_file <- "Red_Deer_all_hourly_precip_new.tb0"
 precip <- read_tb0(hourly_precip_file, values_only = FALSE, timezone = "Etc/GMT+7", NAvalue = -0.1)
 shedfile <- "RedDeer_MESH_drainage_database.r2c"
 shed_raster <- read_r2c_shed(shedfile, as_rasters = TRUE, values_only = TRUE)
-IDW_file <- "RedDeerPrecip.idw"
-gridPrecip(precip, shed_raster, IDW_file)
+IDW_file <- "RedDeerPrecip_idw.r2c"
+source_file_name <- "Red_Deer_all_hourly_precip_new.tb0"
+gridPrecip(precip, source_file_name, shed_raster, IDW_file)
 }
 }
 \seealso{

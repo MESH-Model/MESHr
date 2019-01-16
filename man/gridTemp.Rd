@@ -4,14 +4,19 @@
 \alias{gridTemp}
 \title{Grids station temperatures}
 \usage{
-gridTemp(temp = NULL, shed_raster = NULL, site_elev = NULL,
-  lapse_rates = NULL, IDW_file = NULL, tmin = 223.15,
-  tmax = 313.15, quiet = TRUE, progress_bar = TRUE)
+gridTemp(temp = NULL, source_file_name = "unknown",
+  shed_raster = NULL, site_elev = NULL, lapse_rates = NULL,
+  IDW_file = NULL, tmin = 223.15, tmax = 313.15, quiet = TRUE,
+  progress_bar = TRUE)
 }
 \arguments{
 \item{temp}{Required. A list containing 3 elements: 1. the header meta data, 
 2. the column meta data, and 3. the air temperature values (in C). These values
 are returned automatically by the \pkg{MESHr} command \code{read_tb0}.}
+
+\item{source_file_name}{Required. The name of the original \code{.tb0} source file. 
+Default value is \code{unknown}. The name of the source file is written to
+the \code{r2c} file header.}
 
 \item{shed_raster}{Required. A \code{RasterBrick} object describing the MESH basin. 
 This can be created using the \pkg{MESHr} command \code{read_r2c_shed} with the 

@@ -15,6 +15,9 @@
 #' @param temp Required. A list containing 3 elements: 1. the header meta data, 
 #' 2. the column meta data, and 3. the air temperature values (in C). These values
 #' are returned automatically by the \pkg{MESHr} command \code{read_tb0}.
+#' @param source_file_name Required. The name of the original \code{.tb0} source file. 
+#' Default value is \code{unknown}. The name of the source file is written to
+#' the \code{r2c} file header.
 #' @param shed_raster Required. A \code{RasterBrick} object describing the MESH basin. 
 #' This can be created using the \pkg{MESHr} command \code{read_r2c_shed} with the 
 #' parameter \code{as_rasters = TRUE}.
@@ -55,6 +58,7 @@
 #' @examples \dontrun{
 #' hourly_temp_file <- "Red_Deer_all_hourly_temp_new.tb0"
 #' temp <- read_tb0(hourly_temp_file, values_only = FALSE, timezone = "Etc/GMT+7", NAvalue = -0.1)
+#' source_file_name <- hourly_temp_file
 #' shedfile <- "RedDeer_MESH_drainage_database.r2c"
 #' shed_raster <- read_r2c_shed(shedfile, as_rasters = TRUE, values_only = TRUE)
 #' elev_file <- "site_elevations.csv"
@@ -62,9 +66,12 @@
 #' lapse_rates_file <- "RedDeerLapseRates.csv"
 #' lapse_rates <- read.csv(lapse_rates_file, header = TRUE, stringsAsFactors = FALSE, row.names = 1)
 #' IDW_file <- "RedDeerTemp.idw"
-#' gridPrecip(temp = temp, shed_raster = shed_raster, site_elev = site_elev,
+#' gridPrecip(temp = temp, source_file_name = source_file_name, 
+#' shed_raster = shed_raster, site_elev = site_elev,
 #' lapse_rates = lapse_rates)}
-gridTemp <- function(temp = NULL, shed_raster = NULL, 
+gridTemp <- function(temp = NULL,
+                     source_file_name = "unknown",
+                     shed_raster = NULL, 
                      site_elev = NULL, lapse_rates = NULL, 
                      IDW_file = NULL, tmin = 223.15,
                      tmax = 313.15,
@@ -156,7 +163,8 @@ gridTemp <- function(temp = NULL, shed_raster = NULL,
   x_origin <- paste(":xOrigin                 ", e@xmin, sep = "" )
   y_origin <- paste(":yOrigin                 ", e@ymin, sep = "" )
   header1 <- c(header1, x_origin, y_origin, "#")
-  sourcefile <- ":SourceFile   AEP_Simonette_all_temp_hourly.tb0"
+  # add source file name to header
+  sourcefile <- paste(":SourceFile              ", source_file_name, sep = "")
   header1 <- c(header1, sourcefile, "#")
   
   attributename <- ":AttributeName           Air_temp"
@@ -258,7 +266,7 @@ gridTemp <- function(temp = NULL, shed_raster = NULL,
     
     # output gridded values to file
     
-    frame <- paste(":Frame      ", i,"        ", i, '"', datetime, '"')
+    frame <- paste(":Frame       ", i, "         ", i, ' "', datetime, '"', sep = "")
     cat(frame, eol, file = IDW_file, append = TRUE)
     for (row in 1:rows) {
       output_str <- formatC(t_flipped[row,], digits = 7, width = 10, format =  "f")

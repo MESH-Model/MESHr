@@ -66,7 +66,7 @@ read_MESH_OutputTimeseries_ts <- function(tsFile, variableNames = "",
     names(returned_df)[-1] <- variableNames
   }
   
-  # set missing values to NA
+  # convert to numeric and set missing values to NA
   vals <- returned_df[,-1]
   vals[vals < missingValueThreshold] <- NA_real_
   returned_df[,-1] <- vals

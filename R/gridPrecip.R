@@ -8,6 +8,9 @@
 #' 2. the column meta data, and 3. the precipitation values (in mm). These values
 #' are returned automatically by the \pkg{MESHr} command \code{read_tb0}. Note
 #' that the precipitation values are in mm.
+#' @param source_file_name Required. The name of the original \code{.tb0} source file. 
+#' Default value is \code{unknown}. The name of the source file is written to
+#' the \code{r2c} file header.
 #' @param shed_raster Required. A \code{RasterBrick} object describing the MESH basin.
 #' This can be created using the \pkg{MESHr} command \code{read_r2c_shed} with the
 #' parameter \code{as_rasters = TRUE}.
@@ -34,13 +37,15 @@
 #' precip <- read_tb0(hourly_precip_file, values_only = FALSE, timezone = "Etc/GMT+7", NAvalue = -0.1)
 #' shedfile <- "RedDeer_MESH_drainage_database.r2c"
 #' shed_raster <- read_r2c_shed(shedfile, as_rasters = TRUE, values_only = TRUE)
-#' IDW_file <- "RedDeerPrecip.idw"
-#' gridPrecip(precip, shed_raster, IDW_file)
+#' IDW_file <- "RedDeerPrecip_idw.r2c"
+#' source_file_name <- "Red_Deer_all_hourly_precip_new.tb0"
+#' gridPrecip(precip, source_file_name, shed_raster, IDW_file)
 #' }
-gridPrecip <- function(precip = NULL, shed_raster = NULL,
+gridPrecip <- function(precip = NULL, source_file_name = "unknown", shed_raster = NULL,
                        IDW_file = NULL,
                        quiet = TRUE, progress_bar = TRUE) {
-  if (is.null(precip) | is.null(shed_raster) | is.null(IDW_file)) {
+  if (is.null(precip) | is.null(shed_raster) | is.null(IDW_file) |
+      is.null(source_file_name)) {
     cat("Error: missing values\n")
     return(FALSE)
   }
@@ -106,7 +111,9 @@ gridPrecip <- function(precip = NULL, shed_raster = NULL,
   x_origin <- paste(":xOrigin                 ", e@xmin, sep = "")
   y_origin <- paste(":yOrigin                 ", e@ymin, sep = "")
   header1 <- c(header1, x_origin, y_origin, "#")
-  sourcefile <- ":SourceFile   RedDeer_all_hourly.tb0"
+  
+  # add source file name to header
+  sourcefile <- paste(":SourceFile              ",  source_file_name, sep = "")
   header1 <- c(header1, sourcefile, "#")
 
   attributename <- ":AttributeName           Precipitation_rate"
@@ -144,7 +151,7 @@ gridPrecip <- function(precip = NULL, shed_raster = NULL,
       cat(datetime, "\n")
     }
 
-    frame <- paste(":Frame      ", i, "        ", i, '"', datetime, '"')
+    frame <- paste(":Frame       ", i, "         ", i, ' "', datetime, '"', sep = "")
     cat(frame, eol, file = IDW_file, append = TRUE)
 
     p <- hydroTSM::hydrokrige(h2,
