@@ -16,6 +16,8 @@
 #' parameter \code{as_rasters = TRUE}.
 #' @param IDW_file Required. Name of the output file which holds gridded precipitation for all
 #' time steps.
+#' @param missing_value Required. Value to be used if all values in an interval 
+#' are missing. Default is \code{0}. Also used to code individual missing values.
 #' @param quiet Optional. If \code{TRUE} (the default), messages are suppressed.
 #' If \code{FALSE}, the time interval and messages from each gridding are listed.
 #' @param progress_bar Optional. If \code{TRUE} (the default), a progress bar is
@@ -42,7 +44,7 @@
 #' gridPrecip(precip, source_file_name, shed_raster, IDW_file)
 #' }
 gridPrecip <- function(precip = NULL, source_file_name = "unknown", shed_raster = NULL,
-                       IDW_file = NULL,
+                       IDW_file = NULL, missing_value = 0,
                        quiet = TRUE, progress_bar = TRUE) {
   if (is.null(precip) | is.null(shed_raster) | is.null(IDW_file) |
       is.null(source_file_name)) {
@@ -136,15 +138,23 @@ gridPrecip <- function(precip = NULL, source_file_name = "unknown", shed_raster 
 
   # now loop through hourly precipitation, writing to file
   p4s <- sp::CRS(prj)
+  empty <- as.matrix(elev_raster)
+  empty[] <- missing_value
+  
+  all_zero <- as.matrix(elev_raster)
+  all_zero[!is.na(all_zero)] <- 0
+  
   for (i in 1:num_rows) {
     h <- as.vector(hourly[i, -1])
     h2 <- as.numeric(h)
     names(h2) <- names(h)
-    # if all value are NA, set them to zero
-    if (sum(is.na(h2)) > 0) {
-      # all values are NA
-      h2[is.na(h2)] <- 0
-    }
+    
+    goodvals <- !is.na(h2)
+    numgood <- length(h2[goodvals])
+    
+    zerovals <- (h2 <= 0)
+    zerovals[is.na(zerovals)] <- FALSE
+    numzeros <- length(h2[zerovals])
 
     datetime <- format(hourly[i, 1], format = "%Y/%m/%d %H:%M:%S.0")
     if (!quiet) {
@@ -153,23 +163,54 @@ gridPrecip <- function(precip = NULL, source_file_name = "unknown", shed_raster 
 
     frame <- paste(":Frame       ", i, "         ", i, ' "', datetime, '"', sep = "")
     cat(frame, eol, file = IDW_file, append = TRUE)
+    
+    # if all values are NA, set the entire grid to missing value
+    if (numgood == 0) {
+      # all values are NA
+      h2 <- empty
+      t_flipped <- apply(h2, 2, rev)
+    } else if (numgood > 0 & numzeros == numgood) {
+      # all values are zero
+      h2 <- all_zero
+      t_flipped <- apply(h2, 2, rev)
+    } else if (numgood == 1 & numzeros != numgood ) {
+      # all values are the same
+      all_same <- as.matrix(elev_raster)
+      all_same[!is.na(all_same)] <- (max(h2[goodvals]) / 3600) # mm -> mm/s
+      h2 <- all_same
+      t_flipped <- apply(h2, 2, rev)
+    } else {
+      # more than 1 precip value is present, so interpolate with
+      # error trapping
+      p <- try(hydroTSM::hydrokrige(h2,
+        x.gis = site_info,
+        X = "x", Y = "y",
+        sname = "name", predictors = elev_sp, p4s = p4s,
+        plot = FALSE,
+        verbose = !quiet, debug.level = 0), TRUE
+      )
+      
+      if (class(p) != "try-error") {
+        # it worked
+        m <- as.matrix(p["var1.pred"])
+        rm(p)
+        t_m <- t(m)
+        t_m[!is.na(t_m)] <- t_m[!is.na(t_m)] / 3600 # mm -> mm/s
+        t_m[is.na(t_m)] <- missing_value
+        t_flipped <- apply(t_m, 2, rev)
+      } else {
+        # problem with gridding, so use mean value
+        mean_val <- mean(h2, na.rm = TRUE)
+        all_same <- as.matrix(elev_raster)
+        all_same[!is.na(all_same)] <- (mean_val / 3600) # mm -> mm/s
+        h2 <- all_same
+        t_flipped <- apply(h2, 2, rev)
+      }
+    }
 
-    p <- hydroTSM::hydrokrige(h2,
-      x.gis = site_info,
-      X = "x", Y = "y",
-      sname = "name", predictors = elev_sp, p4s = p4s,
-      plot = FALSE,
-      verbose = !quiet, debug.level = 0
-    )
-
-
-    m <- as.matrix(p["var1.pred"])
-    rm(p)
-    t_m <- t(m)
-    t_m[!is.na(t_m)] <- t_m[!is.na(t_m)] / 3600 # mm -> mm/s
-    t_m[is.na(t_m)] <- -1
-    t_flipped <- apply(t_m, 2, rev)
-
+    # set NA values to missing value
+    t_flipped[is.na(t_flipped)] <- missing_value
+    
     for (row in 1:rows) {
       output_str <- formatC(t_flipped[row, ],
         digits = 7, width = 10,

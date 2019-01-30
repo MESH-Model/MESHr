@@ -6,8 +6,8 @@
 \usage{
 gridTemp(temp = NULL, source_file_name = "unknown",
   shed_raster = NULL, site_elev = NULL, lapse_rates = NULL,
-  IDW_file = NULL, tmin = 223.15, tmax = 313.15, quiet = TRUE,
-  progress_bar = TRUE)
+  IDW_file = NULL, tmin = 223.15, tmax = 313.15,
+  missing_value = NA_real_, quiet = TRUE, progress_bar = TRUE)
 }
 \arguments{
 \item{temp}{Required. A list containing 3 elements: 1. the header meta data, 
@@ -47,6 +47,9 @@ set to this value. The default is 223.15 K, or -50 C.}
 (and lapsed) air temperatures. All values exceeding \code{tmax} will be
 set to this value. The default is 313.15 K, or 40 C.}
 
+\item{missing_value}{Required.  Value to be used if all values in an interval 
+are missing. Default is \code{NA_real_}.}
+
 \item{quiet}{Optional. If \code{TRUE} (the default) messages are suppressed. 
 If \code{FALSE}, the time interval and messages from each gridding are listed.}
 
@@ -78,6 +81,7 @@ are used.
 \dontrun{
 hourly_temp_file <- "Red_Deer_all_hourly_temp_new.tb0"
 temp <- read_tb0(hourly_temp_file, values_only = FALSE, timezone = "Etc/GMT+7", NAvalue = -0.1)
+source_file_name <- hourly_temp_file
 shedfile <- "RedDeer_MESH_drainage_database.r2c"
 shed_raster <- read_r2c_shed(shedfile, as_rasters = TRUE, values_only = TRUE)
 elev_file <- "site_elevations.csv"
@@ -85,7 +89,8 @@ site_elev <- read.csv(elev_file, header = TRUE, stringsAsFactors = FALSE)
 lapse_rates_file <- "RedDeerLapseRates.csv"
 lapse_rates <- read.csv(lapse_rates_file, header = TRUE, stringsAsFactors = FALSE, row.names = 1)
 IDW_file <- "RedDeerTemp.idw"
-gridPrecip(temp = temp, shed_raster = shed_raster, site_elev = site_elev,
+gridPrecip(temp = temp, source_file_name = source_file_name, 
+shed_raster = shed_raster, site_elev = site_elev,
 lapse_rates = lapse_rates)}
 }
 \seealso{

@@ -5,8 +5,8 @@
 \title{Grids station precipitation}
 \usage{
 gridPrecip(precip = NULL, source_file_name = "unknown",
-  shed_raster = NULL, IDW_file = NULL, quiet = TRUE,
-  progress_bar = TRUE)
+  shed_raster = NULL, IDW_file = NULL, missing_value = 0,
+  quiet = TRUE, progress_bar = TRUE)
 }
 \arguments{
 \item{precip}{Required. A list containing 3 elements: 1. the header meta data,
@@ -24,6 +24,9 @@ parameter \code{as_rasters = TRUE}.}
 
 \item{IDW_file}{Required. Name of the output file which holds gridded precipitation for all
 time steps.}
+
+\item{missing_value}{Required. Value to be used if all values in an interval 
+are missing. Default is \code{0}. Also used to code individual missing values.}
 
 \item{quiet}{Optional. If \code{TRUE} (the default), messages are suppressed.
 If \code{FALSE}, the time interval and messages from each gridding are listed.}

@@ -41,6 +41,8 @@
 #' @param tmax Required. The maximum permitted air temperature of the gridded 
 #' (and lapsed) air temperatures. All values exceeding \code{tmax} will be
 #' set to this value. The default is 313.15 K, or 40 C.
+#' @param missing_value Required.  Value to be used if all values in an interval 
+#' are missing. Default is \code{NA_real_}.
 #' @param quiet Optional. If \code{TRUE} (the default) messages are suppressed. 
 #' If \code{FALSE}, the time interval and messages from each gridding are listed.
 #'@param progress_bar Optional. If \code{TRUE} (the default), a progress bar is
@@ -75,6 +77,7 @@ gridTemp <- function(temp = NULL,
                      site_elev = NULL, lapse_rates = NULL, 
                      IDW_file = NULL, tmin = 223.15,
                      tmax = 313.15,
+                     missing_value = NA_real_,
                      quiet = TRUE, progress_bar = TRUE) {
   
   if (is.null(temp) | is.null(shed_raster) | is.null(IDW_file) |
@@ -118,8 +121,6 @@ gridTemp <- function(temp = NULL,
   elev_sorted <- site_elev[elev_locs, 2]
   min_el <- min(elev_sorted)
   min_loc <- which.min(elev_sorted)
-  elev_delta <- elev_sorted - min_el
-
 
   
   # add leading "X" to meta data column names beginning with zero
@@ -185,7 +186,7 @@ gridTemp <- function(temp = NULL,
   # now loop through hourly temps, writing to file
   p4s <- CRS(prj)
   empty <- as.matrix(elev_raster)
-  empty[] <- NA_real_
+  empty[] <- missing_value
   
   for (i in 1:num_rows) {
     datetime <- format(hourly[i, 1], format = "%Y/%m/%d %H:%M:%S.0")
@@ -203,7 +204,7 @@ gridTemp <- function(temp = NULL,
     numgood <- length(h2[goodvals])
     
     
-    # if all values are NA, set the entire grid to NA
+    # if all values are NA, set the entire grid to missing value
     if (numgood == 0) {
       # all values are NA
       h2 <- empty
@@ -238,32 +239,54 @@ gridTemp <- function(temp = NULL,
       
       adjusted_temps <- good_t - delta_el * lapse_rate
       
-      p <- hydroTSM::hydrokrige(adjusted_temps, x.gis = site_info[goodvals,], 
+      # more than 1 value is present, so interpolate with
+      # error trapping
+      p <- try(hydroTSM::hydrokrige(adjusted_temps, x.gis = site_info[goodvals,], 
                       elevation = "Elev", X = "lon", Y = "lat", 
                       type = "cells",
                       sname = "name",  predictors = elev_sp,
                       p4s = p4s, 
                       catchment.name = "all",
-                      plot = FALSE, verbose = !quiet, debug.level = 0)
+                      plot = FALSE, verbose = !quiet, debug.level = 0), TRUE)
       
-      # re-adjust for lapse rate
-      p@data <- p@data + ((elev_sp$Elev - min_el) * lapse_rate)
+      if (class(p) != "try-error") {
+        # it worked
       
-      m <- as.matrix(p["var1.pred"])
-      rm(p)
-      t_m <- t(m)
-      
-      t_flipped <- apply(t_m, 2, rev)
-      
-      # set min and max values
-      t_flipped <- pmax(t_flipped, tmin)
-      t_flipped <- pmin(t_flipped, tmax)
-      
-      # set NA values to -1
-      t_flipped[is.na(t_flipped)] <- -1
+        # re-adjust for lapse rate
+        p@data <- p@data + ((elev_sp$Elev - min_el) * lapse_rate)
+        
+        m <- as.matrix(p["var1.pred"])
+        rm(p)
+        t_m <- t(m)
+        
+        t_flipped <- apply(t_m, 2, rev)
+        
+        # set min and max values
+        t_flipped <- pmax(t_flipped, tmin)
+        t_flipped <- pmin(t_flipped, tmax)
+      } else {
+        # interpolation failed
+        # get mean air temperature
+        mean_temp <- mean(adjusted_temps, na.rm = TRUE)
+        all_same <- as.matrix(elev_raster)
+        all_same[!is.na(all_same)] <- (mean_temp) 
+        
+        # adjust using lapse rate
+        all_same2 <- mean_temp + ((elev_sp$Elev - min_el) * lapse_rate)
+        
+        h2 <- matrix(all_same2, nrow = nrow(all_same), byrow = TRUE)
+        t_flipped <- apply(h2, 2, rev)
+        
+        # set min and max values
+        t_flipped <- pmax(t_flipped, tmin)
+        t_flipped <- pmin(t_flipped, tmax)
+        
+      }
+
     }
     
-    
+    # set NA values to missing value
+    t_flipped[is.na(t_flipped)] <- missing_value
     # output gridded values to file
     
     frame <- paste(":Frame       ", i, "         ", i, ' "', datetime, '"', sep = "")
