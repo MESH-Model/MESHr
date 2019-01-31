@@ -12,7 +12,7 @@
 #' @param as_rasters Optional. If \code{TRUE}, the layers will be returned as 
 #' as raster brick. If \code{FALSE}, they will be returned as an array.
 #'
-#' @return Returns eiher an array or a raster brick of values, and optionally,
+#' @return Returns either an array or a raster brick of values, and optionally,
 #' the meta data and file header.
 #' @author Kevin Shook
 #' @seealso \code{\link{read_r2c_raster}}
@@ -20,11 +20,11 @@
 #'
 #' @examples \dontrun{
 #' # read in basin as a raster brick
-#' basin <-  r2c2basin("MESH_drainage_database.r2c")
+#' basin <-  read_r2c_shed("MESH_drainage_database.r2c")
 #' # read in as an array
-#' basin_array <- r2c2basin("MESH_drainage_database.r2c", as_rasters = FALSE)
+#' basin_array <- read_r2c_shed("MESH_drainage_database.r2c", as_rasters = FALSE)
 #' # get meta data as well
-#' basin_array <- r2c2basin("MESH_drainage_database.r2c", values_only = FALSE, 
+#' basin_array <- read_r2c_shed("MESH_drainage_database.r2c", values_only = FALSE, 
 #' as_rasters = FALSE)
 #' }
 #' 

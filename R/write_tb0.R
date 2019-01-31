@@ -39,13 +39,20 @@
 #' for air temperatures.
 #' @param tb0File Required. Name of file to be written.
 #'
+#' @note If you have read in the \code{header} data from another file, and you
+#' want to use the default values, you can just replace the existing values with
+#' a \code{NULL} value. You might want to do this to use the new start time, 
+#' and creation date.
 #' @return If successful, returns \code{TRUE}. If unsuccessful, returns 
 #' \code{FALSE}
 #' @author Kevin Shook
 #' @seealso \code{\link{read_tb0}}
 #' @export
 #'
-#' @examples \dontrun{ write_tb0(values, column_meta_data, header, "MESH_values.ts0")
+#' @examples \dontrun{ 
+#' header$start_time <- NULL
+#' header$creation_date <- NULL
+#' write_tb0(values, column_meta_data, header, "MESH_values.ts0")
 #' }
 write_tb0 <- function(values = NULL, column_meta = NULL, header = NULL, 
                       NAvalue = -1,

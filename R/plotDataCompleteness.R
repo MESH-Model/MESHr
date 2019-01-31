@@ -22,7 +22,6 @@
 plotDataCompleteness <- function(MESHdata) {
   # set up ggplot2 variables
   datetime <- NULL
-  variable <- NULL
   value <- NULL
   date <- NULL
   
@@ -60,9 +59,6 @@ plotDataCompleteness <- function(MESHdata) {
                      axis.ticks.y = ggplot2::element_blank()) +
       ggplot2::ylab("Data present")
   }
-    
-  
-  
 
   return(p)
   

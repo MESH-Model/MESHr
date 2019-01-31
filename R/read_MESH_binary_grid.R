@@ -45,7 +45,6 @@ read_MESH_binary_grid <- function(binaryFile, shedFile) {
     }
   }
 
-  
   close(binaryFile)
   
   return(all_frame_vals)

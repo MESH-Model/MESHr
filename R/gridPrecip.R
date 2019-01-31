@@ -7,7 +7,7 @@
 #' @param precip Required. A list containing 3 elements: 1. the header meta data,
 #' 2. the column meta data, and 3. the precipitation values (in mm). These values
 #' are returned automatically by the \pkg{MESHr} command \code{read_tb0}. Note
-#' that the precipitation values are in mm.
+#' that the precipitation values are in \strong{mm}.
 #' @param source_file_name Required. The name of the original \code{.tb0} source file. 
 #' Default value is \code{unknown}. The name of the source file is written to
 #' the \code{r2c} file header.
