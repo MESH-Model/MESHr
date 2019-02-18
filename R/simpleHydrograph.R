@@ -239,8 +239,8 @@ simpleHydrograph <- function(MESHvals, stationNames = "", byStation = TRUE,
           ggplot2::xlab("") +
           ggplot2::ylab(expression(paste("Discharge (m", ""^{3}, "/s)", 
                                          sep = ""))) +
-          ggplot2::theme(legend.title = ggplot2::element_blank()) +
-          ggplot2::scale_x_datetime(date_labels = "%b")
+          ggplot2::theme(legend.title = ggplot2::element_blank()) 
+          # ggplot2::scale_x_datetime(date_labels = "%b")
         return(p)
       } else if (!byStation & byYear) {
         p <- ggplot(melted, ggplot2::aes(DATETIME, value, colour = type)) +

@@ -13,7 +13,7 @@
 #'air temperatures, the hourly x monthly lapse rates returned by \code{basinLapseRates}
 #'are used.
 #' @param temp Required. A list containing 3 elements: 1. the header meta data, 
-#' 2. the column meta data, and 3. the air temperature values (in C). These values
+#' 2. the column meta data, and 3. the air temperature values (in K). These values
 #' are returned automatically by the \pkg{MESHr} command \code{read_tb0}.
 #' @param source_file_name Required. The name of the original \code{.tb0} source file. 
 #' Default value is \code{unknown}. The name of the source file is written to

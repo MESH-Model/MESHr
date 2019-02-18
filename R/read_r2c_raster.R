@@ -53,10 +53,19 @@ read_r2c_raster <- function(r2cFile, NAvalue = NULL, as_rts = FALSE, timezone = 
   
   # parse file
   # first get header info
+  
+  
   data_type <- findRecord(r2c, "# DataType")
   var_name <- findRecord(r2c, ":Name ")
   projection <- findRecord(r2c, ":Projection")
-  ellipsoid <- findRecord(r2c, ":Ellipsoid")
+  
+  # try to read ellipsoin
+  
+  ellipsoid <- try(findRecord(r2c, ":Ellipsoid"))
+  
+  if(class(ellipsoid) == "try-error")
+    ellipsoid <- "SPHERE"
+  
   xOrigin <- as.numeric(findRecord(r2c, ":xOrigin"))
   yOrigin <- as.numeric(findRecord(r2c, ":yOrigin"))  
   xCount <- as.numeric(findRecord(r2c, ":xCount"))  

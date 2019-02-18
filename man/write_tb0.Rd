@@ -9,7 +9,7 @@ write_tb0(values = NULL, column_meta = NULL, header = NULL,
 }
 \arguments{
 \item{values}{Optional. A data frame of the values to be written, if the file
-is to be a time seired. Note that the first column must be called 
+is to be a time seires. Note that the first column must be called 
 \code{datetime} and must be a POSIXct date/time.}
 
 \item{column_meta}{Required. A data frame containing the following columns
