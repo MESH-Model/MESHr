@@ -64,7 +64,7 @@ read_r2c_raster <- function(r2cFile, NAvalue = NULL, as_rts = FALSE, timezone = 
   ellipsoid <- try(findRecord(r2c, ":Ellipsoid"))
   
   if(class(ellipsoid) == "try-error")
-    ellipsoid <- "SPHERE"
+    ellipsoid <- "WGS84"
   
   xOrigin <- as.numeric(findRecord(r2c, ":xOrigin"))
   yOrigin <- as.numeric(findRecord(r2c, ":yOrigin"))  
@@ -75,7 +75,7 @@ read_r2c_raster <- function(r2cFile, NAvalue = NULL, as_rts = FALSE, timezone = 
   
   # find number of frames
   frame_start <- grep(":Frame", r2c, fixed = TRUE)
-  
+  frame_end <- grep(":EndFrame", r2c, fixed = TRUE)
   # if no frames, terminate as this is not a time series file
   if (length(frame_start) == 0) {
     cat("Error: not a time series file\n")
@@ -105,7 +105,10 @@ read_r2c_raster <- function(r2cFile, NAvalue = NULL, as_rts = FALSE, timezone = 
   # now read in frames
   datetime_string <- c(0)
   
-  for (i in 1:frame_count) {
+  # get frames starts and ends
+  
+  
+  for (i in 150:frame_count) {
     frame_header <- r2c[frame_start[i]]
     # extract date/time from header - split by quotes that define it
     datetime_string[i] <- stringr::str_split_fixed(frame_header, 
@@ -114,13 +117,17 @@ read_r2c_raster <- function(r2cFile, NAvalue = NULL, as_rts = FALSE, timezone = 
     datetime_string[i] <- stringr::str_trim(datetime_string[i], "both")
   
   
-    frame_lines <- r2c[(frame_start[i] + 1):(frame_start[i] + yCount)]
-    frame_lines <- paste(frame_lines, collapse = "\n")
+    frame_lines <- r2c[(frame_start[i] + 1):(frame_end[i] - 1)]
+    frame_lines <- paste(frame_lines, collapse = " ")
     
-    frame_vals <- readr::read_fwf(frame_lines,
-                                  readr::fwf_widths(widths))
+    # read in as text connection
+    con <- textConnection(frame_lines)
+    frame_vals <- scan(con, what = "numeric")
+    close(con)
     # convert values to a matrix and flip vertically
-    frame_matrix <- data.matrix(frame_vals)
+    frame_vals <- as.numeric(frame_vals)
+    frame_matrix <- matrix(data = frame_vals, nrow = yCount,
+                           ncol = xCount, byrow = TRUE)
     frame_matrix_flipped <- apply(frame_matrix, 2, rev)
     all_frame_vals[,,i] <- frame_matrix_flipped
   }
