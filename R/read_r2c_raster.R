@@ -108,7 +108,7 @@ read_r2c_raster <- function(r2cFile, NAvalue = NULL, as_rts = FALSE, timezone = 
   # get frames starts and ends
   
   
-  for (i in 150:frame_count) {
+  for (i in 1:frame_count) {
     frame_header <- r2c[frame_start[i]]
     # extract date/time from header - split by quotes that define it
     datetime_string[i] <- stringr::str_split_fixed(frame_header, 

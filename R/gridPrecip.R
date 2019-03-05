@@ -184,7 +184,7 @@ gridPrecip <- function(precip = NULL, source_file_name = "unknown", shed_raster 
       # error trapping
       p <- try(hydroTSM::hydrokrige(h2,
         x.gis = site_info,
-        X = "x", Y = "y",
+        X = "x", Y = "y", elevation = "elev",
         sname = "name", predictors = elev_sp, p4s = p4s,
         plot = FALSE,
         verbose = !quiet, debug.level = 0), TRUE
