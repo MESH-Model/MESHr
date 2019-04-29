@@ -59,7 +59,7 @@ read_r2c_raster <- function(r2cFile, NAvalue = NULL, as_rts = FALSE, timezone = 
   var_name <- findRecord(r2c, ":Name ")
   projection <- findRecord(r2c, ":Projection")
   
-  # try to read ellipsoin
+  # try to read ellipsoid
   
   ellipsoid <- try(findRecord(r2c, ":Ellipsoid"))
   
