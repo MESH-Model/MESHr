@@ -4,8 +4,13 @@
 \alias{write_tb0}
 \title{Writes a MESH tb0 file}
 \usage{
-write_tb0(values = NULL, column_meta = NULL, header = NULL,
-  NAvalue = -1, tb0File = "")
+write_tb0(
+  values = NULL,
+  column_meta = NULL,
+  header = NULL,
+  NAvalue = -1,
+  tb0File = ""
+)
 }
 \arguments{
 \item{values}{Optional. A data frame of the values to be written, if the file

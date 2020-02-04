@@ -4,8 +4,13 @@
 \alias{read_r2c_raster}
 \title{Reads r2c file to raster brick}
 \usage{
-read_r2c_raster(r2cFile, NAvalue = NULL, as_rts = FALSE,
-  timezone = "", layerNameFormat = NULL)
+read_r2c_raster(
+  r2cFile,
+  NAvalue = NULL,
+  as_rts = FALSE,
+  timezone = "",
+  layerNameFormat = NULL
+)
 }
 \arguments{
 \item{r2cFile}{Required. Name of \code{r2c} file containing time series.}

@@ -4,8 +4,11 @@
 \alias{read_MESH_OutputTimeseries_csv}
 \title{Reads MESH output .csv file containing timeseries}
 \usage{
-read_MESH_OutputTimeseries_csv(outputFile, timezone = "",
-  missingValueThreshold = -0.1)
+read_MESH_OutputTimeseries_csv(
+  outputFile,
+  timezone = "",
+  missingValueThreshold = -0.1
+)
 }
 \arguments{
 \item{outputFile}{Required. Name of MESH output file. Must be a .csv file.}

@@ -4,9 +4,17 @@
 \alias{simpleHydrograph}
 \title{Creates hydrograph from MESH output}
 \usage{
-simpleHydrograph(MESHvals, stationNames = "", byStation = TRUE,
-  byYear = FALSE, meas = TRUE, sim = TRUE, calStart = "",
-  calEnd = "", alpha = 1)
+simpleHydrograph(
+  MESHvals,
+  stationNames = "",
+  byStation = TRUE,
+  byYear = FALSE,
+  meas = TRUE,
+  sim = TRUE,
+  calStart = "",
+  calEnd = "",
+  alpha = 1
+)
 }
 \arguments{
 \item{MESHvals}{Required. A data frame of output from a MESH run, as produced by \code{read_MESH_OutputTimeseries_csv}.}

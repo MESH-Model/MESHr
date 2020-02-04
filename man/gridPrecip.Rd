@@ -4,9 +4,16 @@
 \alias{gridPrecip}
 \title{Grids station precipitation}
 \usage{
-gridPrecip(precip = NULL, source_file_name = "unknown",
-  shed_raster = NULL, IDW_file = NULL, missing_value = 0,
-  zeromissing = FALSE, quiet = TRUE, progress_bar = TRUE)
+gridPrecip(
+  precip = NULL,
+  source_file_name = "unknown",
+  shed_raster = NULL,
+  IDW_file = NULL,
+  missing_value = 0,
+  zeromissing = FALSE,
+  quiet = TRUE,
+  progress_bar = TRUE
+)
 }
 \arguments{
 \item{precip}{Required. A list containing 3 elements: 1. the header meta data,

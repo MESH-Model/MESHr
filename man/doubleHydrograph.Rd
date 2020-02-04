@@ -4,10 +4,21 @@
 \alias{doubleHydrograph}
 \title{Creates hydrograph from 2 MESH output files}
 \usage{
-doubleHydrograph(MESHvals1, stationNames1 = "", MESHname1 = "MESH1",
-  MESHvals2, stationNames2 = "", MESHname2 = "MESH2",
-  byStation = TRUE, byYear = FALSE, meas = TRUE, sim = TRUE,
-  calStart = "", calEnd = "", alpha = 1)
+doubleHydrograph(
+  MESHvals1,
+  stationNames1 = "",
+  MESHname1 = "MESH1",
+  MESHvals2,
+  stationNames2 = "",
+  MESHname2 = "MESH2",
+  byStation = TRUE,
+  byYear = FALSE,
+  meas = TRUE,
+  sim = TRUE,
+  calStart = "",
+  calEnd = "",
+  alpha = 1
+)
 }
 \arguments{
 \item{MESHvals1}{Required. A data frame of output from a MESH run, as produced by \code{read_MESH_OutputTimeseries_csv}.}

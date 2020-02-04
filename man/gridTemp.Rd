@@ -4,10 +4,19 @@
 \alias{gridTemp}
 \title{Grids station temperatures}
 \usage{
-gridTemp(temp = NULL, source_file_name = "unknown",
-  shed_raster = NULL, site_elev = NULL, lapse_rates = NULL,
-  IDW_file = NULL, tmin = 223.15, tmax = 313.15,
-  missing_value = NA_real_, quiet = TRUE, progress_bar = TRUE)
+gridTemp(
+  temp = NULL,
+  source_file_name = "unknown",
+  shed_raster = NULL,
+  site_elev = NULL,
+  lapse_rates = NULL,
+  IDW_file = NULL,
+  tmin = 223.15,
+  tmax = 313.15,
+  missing_value = NA_real_,
+  quiet = TRUE,
+  progress_bar = TRUE
+)
 }
 \arguments{
 \item{temp}{Required. A list containing 3 elements: 1. the header meta data, 

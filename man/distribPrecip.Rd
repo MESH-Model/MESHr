@@ -4,8 +4,12 @@
 \alias{distribPrecip}
 \title{Distributes precipitation in time}
 \usage{
-distribPrecip(LFprecip = NULL, HFprecip = NULL,
-  zero_missing_HF = TRUE, period_threshold = 48)
+distribPrecip(
+  LFprecip = NULL,
+  HFprecip = NULL,
+  zero_missing_HF = TRUE,
+  period_threshold = 48
+)
 }
 \arguments{
 \item{LFprecip}{Required. A data frame of low temporal frequency (e.g. daily)

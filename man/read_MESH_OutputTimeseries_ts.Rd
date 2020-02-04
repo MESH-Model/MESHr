@@ -4,8 +4,12 @@
 \alias{read_MESH_OutputTimeseries_ts}
 \title{Reads MESH output .ts file containing timeseries}
 \usage{
-read_MESH_OutputTimeseries_ts(tsFile, variableNames = "",
-  timezone = "", missingValueThreshold = -0.1)
+read_MESH_OutputTimeseries_ts(
+  tsFile,
+  variableNames = "",
+  timezone = "",
+  missingValueThreshold = -0.1
+)
 }
 \arguments{
 \item{tsFile}{Required. Name of MESH output file. Must be a .ts file.}

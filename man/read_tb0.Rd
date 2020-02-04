@@ -4,8 +4,7 @@
 \alias{read_tb0}
 \title{Reads a MESH tb0 file}
 \usage{
-read_tb0(tb0File = "", values_only = TRUE, timezone = "",
-  NAvalue = NULL)
+read_tb0(tb0File = "", values_only = TRUE, timezone = "", NAvalue = NULL)
 }
 \arguments{
 \item{tb0File}{Required. The name of the file to be read.}

@@ -4,8 +4,11 @@
 \alias{basinStorageVariablesPlot}
 \title{Plots basin water balance storage components}
 \usage{
-basinStorageVariablesPlot(basinWaterBalance, varNames = "",
-  layers = c(1, 2, 3, 4, 5, 6))
+basinStorageVariablesPlot(
+  basinWaterBalance,
+  varNames = "",
+  layers = c(1, 2, 3, 4, 5, 6)
+)
 }
 \arguments{
 \item{basinWaterBalance}{Required. Data frame to be plotted. As read in by \code{read_MESH_OutputTimeseries_csv}.}

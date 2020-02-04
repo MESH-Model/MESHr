@@ -4,11 +4,24 @@
 \alias{hydroStats}
 \title{Calculates Goodness of Fit statistics for MESH output}
 \usage{
-hydroStats(MESHvals, stationNames = "", calStart = "", calEnd = "",
-  removeMissing = TRUE, doSpearman = FALSE, doPBFDC = FALSE,
-  doLogNSE = TRUE, epsilon = "Pushpalatha2012", digits = 2, j = 1,
-  norm = "sd", s = c(1, 1, 1), method = c("2009", "2012"),
-  lQ.thr = 0.7, hQ.thr = 0.2)
+hydroStats(
+  MESHvals,
+  stationNames = "",
+  calStart = "",
+  calEnd = "",
+  removeMissing = TRUE,
+  doSpearman = FALSE,
+  doPBFDC = FALSE,
+  doLogNSE = TRUE,
+  epsilon = "Pushpalatha2012",
+  digits = 2,
+  j = 1,
+  norm = "sd",
+  s = c(1, 1, 1),
+  method = c("2009", "2012"),
+  lQ.thr = 0.7,
+  hQ.thr = 0.2
+)
 }
 \arguments{
 \item{MESHvals}{Required. A data frame of output from a MESH run, as produced by \code{readOutputTimeseriesCSV}.}
