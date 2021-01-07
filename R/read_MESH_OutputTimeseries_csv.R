@@ -40,7 +40,7 @@ read_MESH_OutputTimeseries_csv <- function(outputFile, timezone = "", missingVal
   names(output) <- vars
   
   # make sure it's actually a time series
-  if ( vars[1] != "YEAR" | vars[2] != "DAY") {
+  if ( vars[1] != "YEAR" | !(vars[2] == "DAY" | vars[2] == "JDAY")) {
     cat('Error: not a time series file\n')
     return(FALSE)
   }
@@ -57,7 +57,11 @@ read_MESH_OutputTimeseries_csv <- function(outputFile, timezone = "", missingVal
   }
   
   if (!subdaily) {
-    DATE <- paste(output$YEAR, "-", output$DAY, sep = "")
+    if (vars[2] == "DAY") {
+      DATE <- paste(output$YEAR, "-", output$DAY, sep = "")
+    } else if (vars[2] == "JDAY") {
+      DATE <- paste(output$YEAR, "-", output$JDAY, sep = "")
+    }
     DATE <- as.Date(DATE, format = "%Y-%j")
     returned_df <- data.frame(DATE, output[, -(1:2)])
      # set missing values to NA
